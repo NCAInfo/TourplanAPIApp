@@ -1,0 +1,142 @@
+﻿@using Newtonsoft.Json;
+@inject APIService ap
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager NavManager
+<div class="card">
+    <div class="card-header bg-primary">
+        Search
+    </div>
+    <div class="card-body">
+        <Form Model="_form" OnFinish="DoSearch" Layout="vertical">
+           
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <FormItem Label="Supplier" Class="mb-1">
+                        <Select DataSource="_supplierList" @bind-Value="context.user" TItem="Supplier" TItemValue="string"
+                                            EnableSearch LabelName="@nameof(Supplier.Name)" ValueName="@nameof(Supplier.Code)"
+                                 OnSelectedItemChanged="DoSupplierChange">
+                         </Select>
+
+                     </FormItem>
+                   @*  <label>SUPPLIER</label>
+                    <input list="_supplierList" class="form-control" @onchange="DoSupplierChange" />
+                    <datalist class="col-12" id="_supplierList">
+                        @foreach (var partner in _supplierList)
+                        {
+                            <option value="@partner.Code">@partner.Name</option>
+                        }
+                    </datalist> *@
+                </div>
+                <div class="col-sm-3">
+
+                     <FormItem Label="Option">
+                         <Select DataSource="_productlist" @bind-Value="context.optionCode" EnableSearch TItem="Product"
+                                 TItemValue="string" LabelName="@nameof(Product.Description)"
+                                 ValueName="@nameof(Product.OptionCode)">
+                         </Select>
+                     </FormItem>
+                </div>
+                <div class="col-sm-2">
+                     <label>DATE FROM (ddmmyy)</label>
+                     <input id="startDate" @onchange="@((args) => startdate = args.Value.ToString())" value="@startdate" class="form-control" placeholder="ddmmyy" />
+                </div>
+                <div class="col-sm-2">
+                     <label>DATE TO (ddmmyy)</label>
+                     <input id="endDate" @onchange="@((args) => enddate = args.Value.ToString())" value="@enddate" class="form-control" placeholder="ddmmyy" />
+                </div>
+                <div class="col-sm-2">
+
+                    <button type="submit" class="btn btn-primary mt-4">search</button>
+                </div>
+            </div>
+        </Form>
+
+               
+
+
+     </div>
+ </div>
+
+ @code {
+
+
+    [Parameter]
+    public EventCallback<GetRateRequest> onSeach{ get; set; }
+    IEnumerable<Supplier> _supplierList { get; set; } = new List<Supplier>();
+
+    IEnumerable<Product> _productlist { get; set; } = new List<Product>();
+
+    string _SelectedSupplier { get; set; }
+    string _SelectedProduct { get; set; }
+    string startdate { get; set; }
+    string enddate { get; set; }
+
+    private SearchForm _form { get; set; } = new SearchForm();
+
+    protected LoginModel User = new LoginModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userjson = await localStorage.GetAsync<string>("user");
+        User = JsonConvert.DeserializeObject<LoginModel>(userjson.Value);
+        _supplierList = await ap.SuppliersGetAll(User.Country);
+
+    }
+    async Task DoSupplierChange()
+    {
+        _form.optionCode = null;
+        _productlist = new List<Product>();
+        _productlist = await ap.OptionGetByCode(_form.user, User.Country);
+    }
+    // async Task DoSupplierChange(ChangeEventArgs e)
+    // {
+    //     _SelectedSupplier = e.Value?.ToString();
+    //     _form.optionCode = null;
+    //     _SelectedProduct = null;
+    //     _productlist = new List<Product>();
+    //     _productlist = await ap.OptionGetByCode(e.Value?.ToString(), User.Country);
+    // }
+    async Task DoSearch()
+    {
+        GetRateRequest rq = new GetRateRequest();
+
+
+        rq.User = _form.user;
+        rq.Password = _form.user;
+        rq.OptionCode = _form.optionCode;
+        // rq.Date_From = _form.dateFromTo?[0];
+        // rq.Date_To = _form.dateFromTo?[1];
+        // rq.User = _SelectedSupplier;
+        // rq.Password = _SelectedSupplier;
+        // rq.OptionCode = _SelectedProduct;
+        rq.Date_From = ConvertDate(startdate);
+        rq.Date_To = ConvertDate(enddate);
+       
+
+        await onSeach.InvokeAsync(rq);
+    }
+
+    class SearchForm
+    {
+        public string user { get; set; }
+        public string optionCode { get; set; }
+        public DateTime?[] dateFromTo { get; set; }
+        public DateTime? date_From { get; set; }
+        public DateTime? date_To { get; set; }
+    }
+
+    private DateTime? ConvertDate(string inputText)
+    {
+        if (DateTime.TryParseExact(inputText, "ddMMyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+        {
+            string formattedDate = parsedDate.ToString("yyyy-MM-dd");
+            return parsedDate;
+        }
+        else
+        {
+            Console.WriteLine("Invalid date format");
+            return null;
+        }
+    }
+}

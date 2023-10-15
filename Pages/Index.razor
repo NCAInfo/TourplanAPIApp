@@ -1,0 +1,52 @@
+﻿@page "/"
+@using Newtonsoft.Json;
+@inject APIService ap
+@inject DbService ds
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager NavManager
+<PageTitle>TP Product Loading</PageTitle>
+<SearchBox onSeach="SetData" />
+
+@if (rqObj != null)
+{
+    <TableSearchRate DataObj="rqObj" OnAmendData="OnAmendDataBack" />
+}
+@if (_amendObj != null && _amendObj.Count > 0)
+{
+    <TableAmend AmendData="_amendObj" />
+}
+
+@code {
+    GetRateRequest rqObj { get; set; }
+    string a = "";
+    protected LoginModel User = new LoginModel();
+
+    protected List<RequestSetRate> _amendObj { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        
+            var userjson = await localStorage.GetAsync<string>("user");
+            User = JsonConvert.DeserializeObject<LoginModel>(userjson.Value);
+            FeedData();
+        
+       
+    }
+
+    void SetData(GetRateRequest rq)
+    {
+        rqObj = rq;
+    }
+
+    void OnAmendDataBack(bool amendCheck)
+    {
+        if (amendCheck)
+        {
+            FeedData();
+        }
+    }
+
+    void FeedData()
+    {
+        _amendObj = ds.RequestSetRateGetByUser(User).ToList();
+    }
+}

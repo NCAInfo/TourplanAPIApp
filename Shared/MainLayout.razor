@@ -1,0 +1,73 @@
+﻿@inherits LayoutComponentBase
+@using Newtonsoft.Json;
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager NavManager
+<PageTitle>TourplanAPIApp</PageTitle>
+
+   
+        <nav class="navbar bg-dark navbar-dark">
+            <div class="container">
+                <div class="navbar-brand">
+                    Product Loading
+                </div>
+               
+                   <Menu Mode=MenuMode.Horizontal Theme="MenuTheme.Dark">
+    <MenuItem Key="rateset" RouterLink="/" RouterMatch="NavLinkMatch.Prefix">
+                <Icon Type="dollar" Theme="outline"></Icon>
+        RATE SET
+    </MenuItem>
+    <MenuItem Key="allocation" RouterLink="/allocation/stopsale" RouterMatch="NavLinkMatch.Prefix">
+        <Icon Type="calendar" Theme="outline"></Icon>
+        STOP SALE
+    </MenuItem>
+    </Menu>
+               
+                     <div class="nav ms-auto">
+                    <div class="navbar-text me-2"> Welcome: @User.Username</div>
+                    <Popconfirm OnConfirm="DoLogout" Title="Confirm Logout?">
+                        <Button Danger Icon="logout">Logout</Button>
+                     </Popconfirm>
+                 </div>
+            </div>
+         </nav>
+<div class="page">
+         <main class="container px-4">
+             @Body
+        </main>
+ 
+</div>
+
+ @code {
+    protected LoginModel User = new LoginModel();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var userjson = await localStorage.GetAsync<string>("user");
+
+            if (userjson.Value == null)
+            {
+                NavManager.NavigateTo("/login", true);
+            }
+
+            User = JsonConvert.DeserializeObject<LoginModel>(userjson.Value);
+        }
+        catch (Exception e)
+        {
+            if (e.Message.Contains("payload "))
+            {
+                NavManager.NavigateTo("/login", true);
+            }
+            throw new Exception(e.Message);
+          
+        }
+
+    }
+
+    async Task DoLogout()
+    {
+        await localStorage.DeleteAsync("user");
+        NavManager.NavigateTo("/login", true);
+    }
+
+}

@@ -1,0 +1,29 @@
+﻿<Properties StartupConfiguration="{FB9F8E10-5DCF-470C-9614-60ABFA478114}|https">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Allocations/StopSale.razor">
+    <Files>
+      <File FileName="Pages/Allocations/StopSale.razor" Line="51" Column="39" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TourplanAPIApp">
+            <Node name="TourplanAPIApp">
+              <Node name="Pages" expanded="True">
+                <Node name="Allocations" expanded="True">
+                  <Node name="StopSale.razor" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.TourplanAPIApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>

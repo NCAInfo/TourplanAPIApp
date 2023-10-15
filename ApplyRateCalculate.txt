@@ -1,0 +1,290 @@
+ // #region groupcost
+        // updateNew.Rates.ChildRate = updateMaster.Rates.ChildRate + rate.MarkupAmount + ((updateMaster.Rates.ChildRate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.InfantRate = updateMaster.Rates.InfantRate + rate.MarkupAmount + ((updateMaster.Rates.InfantRate * rate.MarkupPercent) / 100);
+        // if(updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex1Apply){
+        //      updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // }else{
+        //     updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate;
+        // }
+
+        // if (updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex1Apply)
+        // {
+        //     updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // }
+        // else
+        // {
+        //     updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate;
+        // }
+        //  if (updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex1Apply)
+        // {
+        //     updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // }
+        // else
+        // {
+        //     updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate;
+        // }
+          
+
+       
+       
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+
+        // updateNew.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate = updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate = updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNew.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate = updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMaster.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+
+
+        // #endregion
+
+        // var updateNewSell = rate.GroupSell;
+        // var updateMasterSell = rateMaster.GroupSell;
+        // if (updateNewSell.Rates.AdultRate != null)
+        // {
+        //     updateNewSell.Rates.AdultRate = updateMasterSell.Rates.AdultRate + rate.MarkupAmount + ((updateMasterSell.Rates.AdultRate * rate.MarkupPercent) / 100);
+        // }
+        // if (updateNewSell.Rates.PaxBreakRate != null)
+        // {
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb1 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb1 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb2 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb2 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb3 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb3 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb4 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb4 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb5 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb5 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb6 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb6 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb6 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb7 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb7 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb7 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb8 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb8 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb8 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb9 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb9 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb9 * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.PaxBreakRate.Price_Pxb10 = updateMasterSell.Rates.PaxBreakRate.Price_Pxb10 + rate.MarkupAmount + ((updateMasterSell.Rates.PaxBreakRate.Price_Pxb10 * rate.MarkupPercent) / 100);
+        // }
+        // if (updateNewSell.Rates.RoomRate != null)
+        // {
+
+        //     updateNewSell.Rates.RoomRate.SG = updateMasterSell.Rates.RoomRate.SG + rate.MarkupAmount + ((updateMasterSell.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.RoomRate.TW = updateMasterSell.Rates.RoomRate.TW + rate.MarkupAmount + ((updateMasterSell.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.RoomRate.TR = updateMasterSell.Rates.RoomRate.TR + rate.MarkupAmount + ((updateMasterSell.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.RoomRate.QD = updateMasterSell.Rates.RoomRate.QD + rate.MarkupAmount + ((updateMasterSell.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
+        //     updateNewSell.Rates.RoomRate.AA = updateMasterSell.Rates.RoomRate.AA + rate.MarkupAmount + ((updateMasterSell.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
+
+        // }
+
+        // #region groupsell
+        // updateNewSell.Rates.ChildRate = updateMasterSell.Rates.ChildRate + rate.MarkupAmount + ((updateMasterSell.Rates.ChildRate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.InfantRate = updateMasterSell.Rates.InfantRate + rate.MarkupAmount + ((updateMasterSell.Rates.InfantRate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+
+        // updateNewSell.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate = updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate = updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNewSell.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate = updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterSell.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+
+        // #endregion
+        // var updateNewFitCost = rate.FITCost;
+        // var updateMasterFitCost = rateMaster.FITCost;
+        // if (updateNewFitCost.Rates.AdultRate != null)
+        // {
+        //     updateNewFitCost.Rates.AdultRate = updateMasterFitCost.Rates.AdultRate + rate.MarkupAmount + ((updateMasterFitCost.Rates.AdultRate * rate.MarkupPercent) / 100);
+        // }
+        // if (updateNewFitCost.Rates.PaxBreakRate != null)
+        // {
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb1 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb1 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb2 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb2 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb3 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb3 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb4 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb4 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb5 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb5 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb6 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb6 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb6 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb7 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb7 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb7 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb8 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb8 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb8 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb9 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb9 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb9 * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.PaxBreakRate.Price_Pxb10 = updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb10 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb10 * rate.MarkupPercent) / 100);
+        // }
+        // if (updateNewFitCost.Rates.RoomRate != null)
+        // {
+
+        //     updateNewFitCost.Rates.RoomRate.SG = updateMasterFitCost.Rates.RoomRate.SG + rate.MarkupAmount + ((updateMasterFitCost.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.RoomRate.TW = updateMasterFitCost.Rates.RoomRate.TW + rate.MarkupAmount + ((updateMasterFitCost.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.RoomRate.TR = updateMasterFitCost.Rates.RoomRate.TR + rate.MarkupAmount + ((updateMasterFitCost.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.RoomRate.QD = updateMasterFitCost.Rates.RoomRate.QD + rate.MarkupAmount + ((updateMasterFitCost.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
+        //     updateNewFitCost.Rates.RoomRate.AA = updateMasterFitCost.Rates.RoomRate.AA + rate.MarkupAmount + ((updateMasterFitCost.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
+
+        // }
+        // #region fitcost
+
+        // updateNewFitCost.Rates.ChildRate = updateMasterFitCost.Rates.ChildRate + rate.MarkupAmount + ((updateMasterFitCost.Rates.ChildRate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.InfantRate = updateMasterFitCost.Rates.InfantRate + rate.MarkupAmount + ((updateMasterFitCost.Rates.InfantRate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate = updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate = updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNewFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate = updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterFitCost.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+
+        // #endregion
+        // var updateNewFitSell = rate.FITSell;
+        // var updateMasterFitSell = rateMaster.FITSell;
+
+        // if (updateNewFitSell.Rates.AdultRate != null)
+        // {
+        //     updateNewFitSell.Rates.AdultRate = updateMasterFitSell.Rates.AdultRate + rate.MarkupAmount + ((updateMasterFitSell.Rates.AdultRate * rate.MarkupPercent) / 100);
+        // }
+        // if (updateNewFitSell.Rates.PaxBreakRate != null)
+        // {
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb1 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb1 + rate.MarkupAmount + ((updateMasterFitCost.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb2 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb2 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb3 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb3 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb4 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb4 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb5 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb5 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb6 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb6 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb6 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb7 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb7 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb7 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb8 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb8 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb8 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb9 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb9 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb9 * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.PaxBreakRate.Price_Pxb10 = updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb10 + rate.MarkupAmount + ((updateMasterFitSell.Rates.PaxBreakRate.Price_Pxb10 * rate.MarkupPercent) / 100);
+        // }
+        // if (updateNewFitSell.Rates.RoomRate != null)
+        // {
+
+        //     updateNewFitSell.Rates.RoomRate.SG = updateMasterFitSell.Rates.RoomRate.SG + rate.MarkupAmount + ((updateMasterFitSell.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.RoomRate.TW = updateMasterFitSell.Rates.RoomRate.TW + rate.MarkupAmount + ((updateMasterFitSell.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.RoomRate.TR = updateMasterFitSell.Rates.RoomRate.TR + rate.MarkupAmount + ((updateMasterFitSell.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.RoomRate.QD = updateMasterFitSell.Rates.RoomRate.QD + rate.MarkupAmount + ((updateMasterFitSell.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
+        //     updateNewFitSell.Rates.RoomRate.AA = updateMasterFitSell.Rates.RoomRate.AA + rate.MarkupAmount + ((updateMasterFitSell.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
+
+        // }
+        // #region fitsell
+        // updateNewFitSell.Rates.ChildRate = updateMasterFitSell.Rates.ChildRate + rate.MarkupAmount + ((updateMasterFitSell.Rates.ChildRate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.InfantRate = updateMasterFitSell.Rates.InfantRate + rate.MarkupAmount + ((updateMasterFitSell.Rates.InfantRate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex6Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex7Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex8Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex9Rate * rate.MarkupPercent) / 100);
+
+        // updateNewFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate = updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.AdultExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate = updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.ChildExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+        // updateNewFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate = updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate + rate.MarkupAmount + ((updateMasterFitSell.Rates.Extras.InfantExtras.ExtraRates.Ex10Rate * rate.MarkupPercent) / 100);
+
+        // #endregion

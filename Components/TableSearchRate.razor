@@ -1,0 +1,183 @@
+﻿@using Newtonsoft.Json;
+@inject APIService ap
+@inject DbService ds
+@inject ProtectedLocalStorage localStorage
+@inject IMessageService _message
+
+<div class="card mt-2">
+    <div class="card-header bg-success">Search Result</div>
+    <div class="card-body">
+        <Table DataSource="_objDateRange" ScrollY="350" Size="TableSize.Small" Loading="IsLoading">
+            <ActionColumn Title="#" Width="100">
+                <Button OnClick="()=>PopUpDateRange(context)" Icon="copy">Copy</Button>
+            </ActionColumn>
+            <PropertyColumn Width="400" Property="c=>c.OptionCode"></PropertyColumn>
+            <PropertyColumn Property="c=>c.Date_From" Format="dd/MM/yyyy" Sortable></PropertyColumn>
+             <PropertyColumn Property="c=>c.Date_To" Format="dd/MM/yyyy" Sortable
+                 DefaultSortOrder="@SortDirection.Descending"></PropertyColumn>
+             <Column TData="string" Title="Price Code">
+                 @foreach (var dr in context.DateRanges)
+                {
+                    <Tooltip>
+                        <TitleTemplate>
+                            <ul>
+                            @foreach(var r in dr.RateSet)
+                            {
+                                    <li> @r.Rate_Text </li>
+                            }
+                            </ul>
+                        </TitleTemplate>
+                        <ChildContent>
+                            <Tag>@dr.Price_Code</Tag>
+                        </ChildContent>
+                    </Tooltip>
+                }
+            </Column>
+        </Table>
+    </div>
+</div>
+
+<Modal Visible="IsModal" OnCancel="OnCancel" OnOk="DoAddAmend" Title="@_selectDateRangeGroup.OptionCode">
+    <Form Model="_selectDateRangeGroup">
+        <FormItem Label="Date From">
+            <DatePicker @bind-Value="context.Date_From" Format="dd/MM/yyyy"></DatePicker>
+        </FormItem>
+        <FormItem Label="Date To">
+            <DatePicker @bind-Value="context.Date_To" Format="dd/MM/yyyy"></DatePicker>
+        </FormItem>
+        <FormItem Label="Add 1 Year">
+            <Checkbox @bind-Checked="context.Add1Year" OnChange="CheckYear"></Checkbox>
+        </FormItem>
+        <FormItem Label="Note">
+            <Input @bind-Value="context.Note"></Input>
+        </FormItem>
+        <FormItem>
+            <Table DataSource="context.DateRanges" Context="dr" @bind-SelectedRows="_selectDateRange" PageSize="100"
+                HidePagination>
+                <Selection Key="@dr.Price_Code"></Selection>
+                <PropertyColumn Property="c=>c.Price_Code" Title="Price Code"></PropertyColumn>
+            </Table>
+        </FormItem>
+    </Form>
+</Modal>
+
+@code {
+    bool IsModal = false;
+    bool IsLoading = false;
+    [Parameter]
+    public GetRateRequest DataObj { get; set; }
+
+    [Parameter]
+    public string SupplierName { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnAmendData { get; set; }
+
+    private IEnumerable<GetRateResult> _objDateRange { get; set; }
+
+    private GetRateResult _selectDateRangeGroup { get; set; } = new GetRateResult();
+
+    private LoginModel User { get; set; }
+
+    private IEnumerable<DateRange> _selectDateRange { get; set; }
+
+    void PopUpDateRange(GetRateResult context)
+    {
+        IsModal = true;
+        _selectDateRangeGroup = Functions.CloneObject(context);
+        _selectDateRangeGroup.Date_From = context.Date_From;
+        _selectDateRangeGroup.Date_To = context.Date_To;
+        _selectDateRange = _selectDateRangeGroup.DateRanges;
+    }
+
+    void CheckYear()
+    {
+        if (_selectDateRangeGroup.Add1Year)
+        {
+            _selectDateRangeGroup.Date_From = _selectDateRangeGroup.Date_From.AddYears(1);
+            _selectDateRangeGroup.Date_To = _selectDateRangeGroup.Date_To.AddYears(1);
+        }
+        else
+        {
+            _selectDateRangeGroup.Date_From = _selectDateRangeGroup.Date_From.AddYears(-1);
+            _selectDateRangeGroup.Date_To = _selectDateRangeGroup.Date_To.AddYears(-1);
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IsLoading = true;
+        var userjson = await localStorage.GetAsync<string>("user");
+        User = JsonConvert.DeserializeObject<LoginModel>(userjson.Value);
+        var obj = await ap.GetRate(DataObj, User.Country);
+        if (obj.GetRateReply != null)
+        {
+            _objDateRange = obj.GetRateReply.DateRange.GroupBy(g => new { g.OptionCode, g.Date_From, g.Date_To }).Select(s => new
+            GetRateResult
+                {
+                    OptionCode = s.Key.OptionCode,
+                    Date_From = s.Key.Date_From,
+                    Date_To = s.Key.Date_To
+                }).ToList();
+
+            foreach (var dr in _objDateRange)
+            {
+                var searchObj = obj.GetRateReply.DateRange.Where(w => w.OptionCode == dr.OptionCode && w.Date_From == dr.Date_From &&
+                w.Date_To == dr.Date_To).ToList();
+                if (searchObj.Count > 0)
+                {
+                    dr.DateRanges.AddRange(searchObj);
+                }
+            }
+        }
+        IsLoading = false;
+    }
+
+    void OnCancel()
+    {
+        IsModal = false;
+    }
+
+    void DoAddAmend()
+    {
+
+        var obj = ds.RequestSetRateGetByUser(User);
+        var chkExisting = obj.Where(w =>
+        w.OptionCode == _selectDateRangeGroup.OptionCode
+        && w.Date_From == _selectDateRangeGroup.Date_From
+        && w.Date_To == _selectDateRangeGroup.Date_To
+        && w.CreateBy == User.Username
+        ).ToList();
+
+        foreach (var sd in _selectDateRange)
+        {
+            var chkpriceCode = chkExisting.Where(w => w.Price_Code == sd.Price_Code).FirstOrDefault();
+            if (chkpriceCode == null)
+            {
+                sd.Date_From = _selectDateRangeGroup.Date_From;
+                sd.Date_To = _selectDateRangeGroup.Date_To;
+                RequestSetRate rs = new RequestSetRate();
+                int i = 1;
+                sd.RateSet.ForEach(x =>
+                {
+                    x.Key = i++;
+                });
+                rs.Supplier = DataObj.User;
+                rs.OptionCode = sd.OptionCode;
+                rs.JsonMaster = JsonConvert.SerializeObject(sd);
+                rs.JsonData = JsonConvert.SerializeObject(sd);
+                rs.Country = User.Country;
+                rs.CreateBy = User.Username;
+                rs.Note = _selectDateRangeGroup.Note;
+                rs.IsPublish = false;
+                rs.Date_From = _selectDateRangeGroup.Date_From;
+                rs.Date_To = _selectDateRangeGroup.Date_To;
+                rs.Price_Code = sd.Price_Code;
+                var adddb = ds.RequestSetRateSave(rs);
+            }
+        }
+        IsModal = false;
+
+        OnAmendData.InvokeAsync(true);
+    }
+}

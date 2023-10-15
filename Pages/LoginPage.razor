@@ -1,0 +1,70 @@
+﻿@page "/Login"
+@using Newtonsoft.Json;
+@layout LoginLayout
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager NavManager
+@inject APIService ap
+@inject IMessageService _message
+
+<div style="width:350px" class="m-auto">
+    <img src="/image/DT_Logo.png" alt="" width="50">
+    <h4>Product Loading</h4>
+    <Form Model="_obj" OnFinish="DoLogin" Layout="vertical">
+        <FormItem Label="Username">
+            <Input @bind-Value="context.Username" />
+        </FormItem>
+        <FormItem Label="Password">
+            <InputPassword @bind-Value="context.Password" />
+        </FormItem>
+        <FormItem Label="Select Database">
+            <Select DataSource="_countryList" TItem="CountryList" TItemValue="string"
+                LabelName="@nameof(CountryList.Name)" ValueName="@nameof(CountryList.Value)"
+                @bind-Value="context.Country"></Select>
+        </FormItem>
+        <Button HtmlType="submit" Icon="key">Login</Button>
+    </Form>
+</div>
+
+@code {
+    protected LoginModel _obj { get; set; } = new LoginModel();
+
+    protected List<CountryList> _countryList { get; set; } = new List<CountryList>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        _countryList.Add(new CountryList { Name = "Thailand", Value = "TH" });
+        _countryList.Add(new CountryList { Name = "Singapore", Value = "SG" });
+        _countryList.Add(new CountryList { Name = "Vietnam", Value = "VN" });
+        _countryList.Add(new CountryList { Name = "Myanmar", Value = "MM" });
+        _countryList.Add(new CountryList { Name = "Malaysia", Value = "MY" });
+        _countryList.Add(new CountryList { Name = "Cambodia", Value = "KH" });
+        _countryList.Add(new CountryList { Name = "Philippines", Value = "PH" });
+        _countryList.Add(new CountryList { Name = "Laos", Value = "LA" });
+        _countryList.Add(new CountryList { Name = "Sri Lanka", Value = "SL" });
+        _countryList.Add(new CountryList { Name = "Maldives", Value = "MV" });
+
+
+
+    }
+
+    async Task DoLogin()
+    {
+
+        var res = await ap.Login(_obj);
+        if (res != null)
+        {
+            _obj.Password = "XXX";
+            _obj.SEC = res.SEC;
+            await localStorage.SetAsync("user", JsonConvert.SerializeObject(_obj));
+            NavManager.NavigateTo("/", true);
+        }
+        else
+        {
+            await _message.Error("Username or Password Incorrect");
+        }
+
+
+    }
+}

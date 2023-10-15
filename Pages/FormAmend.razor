@@ -1,0 +1,50 @@
+﻿@page "/form/{id:int}"
+@using Newtonsoft.Json;
+@inject APIService ap
+@inject DbService ds
+@inject ProtectedLocalStorage localStorage
+@inject IMessageService _message
+<h3>FormAmend</h3>
+
+<Form Model="_data" Loading="IsLoading" Layout="vertical" OnFinish="DoSave" On>
+    <FormItem Label="OptionCode">
+        <Input @bind-Value="context.OptionCode" Disabled/>
+    </FormItem>
+
+    <Button HtmlType="submit" Icon="Save">Save</Button>
+</Form>
+
+ @code {
+    [Parameter]
+    public int id{ get; set; }
+    bool IsLoading = true;
+
+    protected RequestSetRate _obj { get; set; }
+    protected DateRange _data { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _obj = await ds.RequestSetRateById(id);
+        if(_obj != null)
+        {
+            _data = JsonConvert.DeserializeObject<DateRange>(_obj.JsonData);
+        }
+        IsLoading = false;
+    }
+
+    async Task DoSave()
+    {
+        _obj.JsonData = JsonConvert.SerializeObject(_data);
+        ds.RequestSetRateSave(_obj);
+    }
+
+    async Task DoApprove()
+    {
+        _obj.JsonData = JsonConvert.SerializeObject(_data);
+        ds.RequestSetRateSave(_obj);
+
+        // update to API
+    }
+
+
+   
+}
