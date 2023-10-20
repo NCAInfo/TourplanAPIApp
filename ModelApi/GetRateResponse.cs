@@ -12,47 +12,49 @@ using System.Xml.Serialization;
 public class ExtraRates { 
 
 	
+	
 
 	[XmlElement(ElementName="Ex1Rate")] 
 	public double Ex1Rate { get; set; }
-    public bool Ex1Apply { get; set; } = true;
+    public bool Ex1Apply { get; set; } 
 
     [XmlElement(ElementName="Ex2Rate")] 
 	public double Ex2Rate { get; set; }
-    public bool Ex2Apply { get; set; } = true;
+    public bool Ex2Apply { get; set; }
 
     [XmlElement(ElementName="Ex3Rate")] 
 	public double Ex3Rate { get; set; }
-    public bool Ex3Apply { get; set; } = true;
+    public bool Ex3Apply { get; set; } 
 
     [XmlElement(ElementName="Ex4Rate")] 
 	public double Ex4Rate { get; set; }
-    public bool Ex4Apply { get; set; } = true;
+    public bool Ex4Apply { get; set; } 
 
     [XmlElement(ElementName = "Ex5Rate")]
     public double Ex5Rate { get; set; }
-    public bool Ex5Apply { get; set; } = true;
+    public bool Ex5Apply { get; set; } 
 
     [XmlElement(ElementName = "Ex6Rate")]
     public double Ex6Rate { get; set; }
-    public bool Ex6Apply { get; set; } = true;
+    public bool Ex6Apply { get; set; }
     [XmlElement(ElementName = "Ex7Rate")]
     public double Ex7Rate { get; set; }
-    public bool Ex7Apply { get; set; } = true;
+    public bool Ex7Apply { get; set; } 
     [XmlElement(ElementName = "Ex8Rate")]
     public double Ex8Rate { get; set; }
-    public bool Ex8Apply { get; set; } = true;
+    public bool Ex8Apply { get; set; }
     [XmlElement(ElementName = "Ex9Rate")]
     public double Ex9Rate { get; set; }
-    public bool Ex9Apply { get; set; } = true;
+    public bool Ex9Apply { get; set; } 
     [XmlElement(ElementName = "Ex10Rate")]
     public double Ex10Rate { get; set; }
-    public bool Ex10Apply { get; set; } = true;
+    public bool Ex10Apply { get; set; } 
 }
 
 [XmlRoot(ElementName="AdultExtras")]
 public class AdultExtras { 
 
+	
 	[XmlElement(ElementName="ExtraRates")] 
 	public ExtraRates ExtraRates { get; set; } = new ExtraRates();
 }
@@ -87,18 +89,20 @@ public class Extras {
 [XmlRoot(ElementName="Rates")]
 public class Rates {
 
+	
+
     public bool IsManual { get; set; }
 
 	
     [XmlElement(ElementName="AdultRate")] 
 	public double? AdultRate { get; set; }
-	public bool AdultRateApply { get; set; } = true;
+    public bool AdultRateApply { get; set; }
     [XmlElement(ElementName = "ChildRate")]
     public double ChildRate { get; set; }
-    public bool ChildRateApply { get; set; } = true;
+    public bool ChildRateApply { get; set; }
     [XmlElement(ElementName = "InfantRate")]
     public double InfantRate { get; set; }
-    public bool InfantRateApply { get; set; } = true;
+    public bool InfantRateApply { get; set; }
     [XmlElement(ElementName="PaxBreakRate")] 
 	public PaxBreakRate? PaxBreakRate {get;set;}
 
@@ -111,19 +115,19 @@ public class Rates {
 public class RoomRate{
 	[XmlElement(ElementName="SG")] 
 	public double? SG { get; set; }
-    public bool SGApply { get; set; } = true;
+    public bool SGApply { get; set; } 
     [XmlElement(ElementName="TW")] 
 	public double? TW { get; set; }
-    public bool TWApply { get; set; } = true;
+    public bool TWApply { get; set; } 
     [XmlElement(ElementName="TR")] 
 	public double? TR { get; set; }
-    public bool TRApply { get; set; } = true;
+    public bool TRApply { get; set; } 
     [XmlElement(ElementName="QD")] 
 	public double? QD { get; set; }
-    public bool QDApply { get; set; } = true;
+    public bool QDApply { get; set; }
     [XmlElement(ElementName="AA")] 
 	public double AA { get; set; }
-    public bool AAApply { get; set; } = true;
+    public bool AAApply { get; set; }
 
 }
 
@@ -132,38 +136,40 @@ public class PaxBreakRate
 {
 	[XmlElement(ElementName = "Price_Pxb1")]
 	public double Price_Pxb1 { get; set; }
-	public bool Price_Pxb1Apply { get; set; } = true;
+	public bool Price_Pxb1Apply { get; set; } 
     [XmlElement(ElementName="Price_Pxb2")] 
 	public double Price_Pxb2 {get;set;}
-    public bool Price_Pxb2Apply { get; set; } = true;
+    public bool Price_Pxb2Apply { get; set; } 
     [XmlElement(ElementName="Price_Pxb3")] 
 	public double Price_Pxb3 {get;set;}
-    public bool Price_Pxb3Apply { get; set; } = true;
+    public bool Price_Pxb3Apply { get; set; }
     [XmlElement(ElementName="Price_Pxb4")] 
 	public double Price_Pxb4 {get;set;}
-    public bool Price_Pxb4Apply { get; set; } = true;
+    public bool Price_Pxb4Apply { get; set; } 
     [XmlElement(ElementName = "Price_Pxb5")]
     public double Price_Pxb5 { get; set; }
-    public bool Price_Pxb5Apply { get; set; } = true;
+    public bool Price_Pxb5Apply { get; set; }
     [XmlElement(ElementName = "Price_Pxb6")]
     public double Price_Pxb6 { get; set; }
-    public bool Price_Pxb6Apply { get; set; } = true;
+    public bool Price_Pxb6Apply { get; set; }
     [XmlElement(ElementName = "Price_Pxb7")]
     public double Price_Pxb7 { get; set; }
-    public bool Price_Pxb7Apply { get; set; } = true;
+    public bool Price_Pxb7Apply { get; set; } 
     [XmlElement(ElementName = "Price_Pxb8")]
     public double Price_Pxb8 { get; set; }
-    public bool Price_Pxb8Apply { get; set; } = true;
+    public bool Price_Pxb8Apply { get; set; } 
     [XmlElement(ElementName = "Price_Pxb9")]
     public double Price_Pxb9 { get; set; }
-    public bool Price_Pxb9Apply { get; set; } = true;
+    public bool Price_Pxb9Apply { get; set; } 
     [XmlElement(ElementName = "Price_Pxb10")]
     public double Price_Pxb10 { get; set; }
-    public bool Price_Pxb10Apply { get; set; } = true;
+    public bool Price_Pxb10Apply { get; set; } 
 }
 
 [XmlRoot(ElementName="GroupCost")]
 public class GroupCost { 
+
+	
 
 	[XmlElement(ElementName="Rates")] 
 	public Rates Rates { get; set; }  = new Rates();

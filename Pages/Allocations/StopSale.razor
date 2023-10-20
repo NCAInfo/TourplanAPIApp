@@ -3,6 +3,7 @@
 @inject APIService ap;
 @inject ProtectedLocalStorage localStorage
 @inject NavigationManager NavManager
+@inject INotificationService _notice
 <div class="card">
     <div class="card-header">
         Search
@@ -65,101 +66,133 @@
 <Skeleton Loading="IsLoading" Active>
 @if (_obj.GetInventoryReply?.Allocation != null)
 {
-    foreach (var alc in _obj.GetInventoryReply.Allocation)
+        int i = 1;
+   <Collapse Class="mt-2">
+      
+
+  
+    @foreach (var alc in _obj.GetInventoryReply.Allocation)
     {
             if (alc.ShowAllocation)
             {
                 var groupMarket = alc.Split.GroupBy(g => g.SplitCode).ToArray();
                 var groupDate = alc.Split.Where(w => w.UnitTypeInventory != null).SelectMany(ss => ss.UnitTypeInventory.PerDayInventory).GroupBy(g => g.Date).ToArray();
-
-                <div class="card mt-2">
-                    <div class="card-header">
-                        @alc.AllocationName - @alc.AllocationDescription
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                @foreach (var alsplit in alc.Split)
+                    <Panel Header="aaaa">
+                        <HeaderTemplate>
+                           
+                                    <b> @alc.AllocationName - @alc.AllocationDescription</b>
+  
+                        </HeaderTemplate>
+                        <ExtraTemplate>
+                            <div @onclick:stopPropagation>
+                            <Popconfirm OnConfirm="()=>SetInventory(alc)" Title="Confirm Update to Database?">
+                               
+                                @if (alc.UpdateToTP == false)
                                 {
-                                    <Checkbox @bind-Checked="alsplit.SplitCode_check" /> @alsplit.SplitCode <br />
+                                    <Button Class="btn-warning" Loading="btnLoading" Icon="upload">
+                                        Update To Database
+                                    </Button>
                                 }
-                                <button class="btn btn-md btn-danger" @onclick="()=>CloseAll(alc)">Close All</button>
-                                <button class="btn btn-md btn-success" @onclick="()=>OpenAll(alc)">Open All</button>
+                                else
+                                {
+                                        <Button Class="btn-approve" Loading="btnLoading" Icon="upload">
+                                        <span>Updated Date:</span> <b> @alc.UpdateToTPdate.ToString("dd/MM/yyyy HH:mm")</b>
+                                    </Button>
+                                }
+                                           
+                            </Popconfirm>
                             </div>
-                            <div class="col-sm-10">
-
-                                <div class="table-responsive" style="height:300px; overflow-x:auto;">
-                                    <table class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th width="60">CLOSE</th>
-                                                <th width="60">OPEN</th>
-                                                <th width="100">DATE</th>
-                                                @foreach (var market in groupMarket)
-                                                {
-                                                    <th>@market.Key</th>
-                                                }
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var d in groupDate)
+                        </ExtraTemplate>
+                        <ChildContent>
+                            <div class="card">
+                               
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            @foreach (var alsplit in alc.Split)
                                             {
-                                                <tr>
-                                                    <td><button class="btn btn-sm btn-danger" @onclick="()=>CloseByDate(d.Key,alc)">Close</button></td>
-                                                    <td><button class="btn btn-sm btn-success" @onclick="()=>OpenByDate(d.Key,alc)">Open</button></td>
-                                                    <td>@d.Key.ToString("dd/MM/yyyy") </td>
-                                                    @foreach (var market in groupMarket)
-                                                    {
-                                                        var split = alc.Split.Where(w => w.SplitCode == market.Key).FirstOrDefault();
-                                                        if (split != null && split.UnitTypeInventory != null)
-                                                        {
-                                                            foreach (var unit in split.UnitTypeInventory?.PerDayInventory)
-                                                            {
-                                                                if (unit.Date == d.Key)
-                                                                {
-                                                                    <td>
-                                                                        <AntDesign.InputNumber @bind-Value="unit.ReleasePeriod" Style="width:70px" />
-                                                                        <Switch @bind-Checked="unit.RequestOk_Check" OnChange="()=>toggleRQ(unit)"></Switch>
-                                                                        @* <button @onclick="()=>toggleRQ(unit)">@unit.RequestOK</button> *@
-                                                                    </td>
-                                                                }
-                                                                else
-                                                                {
-
-                                                                }
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            <td></td>
-                                                        }
-
-
-                                                    }
-                                                </tr>
+                                                <Checkbox @bind-Checked="alsplit.SplitCode_check" /> @alsplit.SplitCode <br />
                                             }
+                                            <button class="btn btn-md btn-danger" @onclick="()=>CloseAll(alc)">Close All</button>
+                                            <button class="btn btn-md btn-success" @onclick="()=>OpenAll(alc)">Open All</button>
+                                        </div>
+                                        <div class="col-sm-10">
 
-                                        </tbody>
-                                    </table>
+                                            <div class="table-responsive" style="height:500px; overflow-x:auto;">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="60">CLOSE</th>
+                                                            <th width="60">OPEN</th>
+                                                            <th width="100">DATE</th>
+                                                            @foreach (var market in groupMarket)
+                                                            {
+                                                                <th>@market.Key</th>
+                                                            }
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var d in groupDate)
+                                                        {
+                                                            <tr>
+                                                                <td><button class="btn btn-sm btn-danger" @onclick="()=>CloseByDate(d.Key,alc)">Close</button></td>
+                                                                <td><button class="btn btn-sm btn-success" @onclick="()=>OpenByDate(d.Key,alc)">Open</button></td>
+                                                                <td>@d.Key.ToString("dd/MM/yyyy") </td>
+                                                                @foreach (var market in groupMarket)
+                                                                {
+                                                                    var split = alc.Split.Where(w => w.SplitCode == market.Key).FirstOrDefault();
+                                                                    if (split != null && split.UnitTypeInventory != null)
+                                                                    {
+                                                                        foreach (var unit in split.UnitTypeInventory?.PerDayInventory)
+                                                                        {
+                                                                            if (unit.Date == d.Key)
+                                                                            {
+                                                                                <td class="@(unit.error ?"text-danger":"")">
+                                                                                    <AntDesign.InputNumber @bind-Value="unit.ReleasePeriod" Style="width:70px" />
+                                                                                    <Switch @bind-Checked="unit.RequestOk_Check" OnChange="()=>toggleRQ(unit)"></Switch>
+                                                                                    @* <button @onclick="()=>toggleRQ(unit)">@unit.RequestOK</button> *@
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td></td>
+                                                                    }
+
+
+                                                                }
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <Popconfirm OnConfirm="()=>SetInventory(alc)" Title="Confirm Update to Database?">
-                            <Button  Class="btn-approve" Loading="btnLoading">Update To Database</Button>
-                            </Popconfirm>
-                        </div>
-                    </div>
-                </div>
+                        </ChildContent>
+                       
+                    </Panel>
+             
+               
             }
             
     }
-}
+        </Collapse>
+    }
 </Skeleton>
 
 @code {
@@ -183,18 +216,50 @@
     protected bool btnLoading = false;
     async Task SetInventory(Allocation alc){
         btnLoading = true;
-        SetInventoryRequest rq = new SetInventoryRequest();
-        rq.User = _form.supplier;
-        rq.Password = _form.supplier;
-        rq.SupplierCode = _form.supplier;
-        rq.Date_From = ConvertDate(startdate);
-        rq.Date_To = ConvertDate(enddate);
+        bool error = false;
 
-        var newalc = alc.Split.RemoveAll(w => w.UnitTypeInventory == null);
+        if(alc.Split.Any(w=>w.UnitTypeInventory.PerDayInventory.Any(aa=>aa.ReleasePeriod < 0))){
+            var objError = alc.Split.Where(w => w.UnitTypeInventory.PerDayInventory.Any(aa => aa.ReleasePeriod < 0)).ToList();
+            List<string> errMessage = new List<string>();
+            foreach(var o in objError)
+            {
+                var getDateError = o.UnitTypeInventory.PerDayInventory.Where(w => w.ReleasePeriod < 0).ToList();
+                foreach(var err in getDateError)
+                {
+                    err.error = true;
+                    errMessage.Add("DATE:" + err.Date.ToString("dd/MM/yyyy") + " Release Period :" + err.ReleasePeriod + " days");
+                }
+            }
+            error = true;
+            btnLoading = false;
+            await _notice.Open(new NotificationConfig()
+                {
+                    Message = "Error from Tourplan",
+                    Description = string.Join("<br>", errMessage),
+                    NotificationType = NotificationType.Error,
+                    Duration = 5000
+                });
+           
 
-        rq.Allocation = alc;
-        var res = await ap.SetInventory(rq,User.Country);
+        }
 
+        if (!error)
+        {
+            SetInventoryRequest rq = new SetInventoryRequest();
+            rq.User = _form.supplier;
+            rq.Password = _form.supplier;
+            rq.SupplierCode = _form.supplier;
+            rq.Date_From = ConvertDate(startdate);
+            rq.Date_To = ConvertDate(enddate);
+
+            var newalc = alc.Split.RemoveAll(w => w.UnitTypeInventory == null);
+
+            rq.Allocation = alc;
+            var res = await ap.SetInventory(rq, User.Country);
+            alc.UpdateToTP = true;
+            alc.UpdateToTPdate = DateTime.Now;
+        }
+        
         btnLoading = false;
     }
     void CloseByDate(DateTime dt,Allocation alc){
@@ -219,7 +284,7 @@
     }
 
     void CloseAll(Allocation alc){
-         var getobj = alc.Split.Where(w=>w.UnitTypeInventory!=null && w.SplitCode_check==true).SelectMany(ss=>ss.UnitTypeInventory.PerDayInventory).ToList();
+        var getobj = alc.Split.Where(w=>w.UnitTypeInventory!=null && w.SplitCode_check==true).SelectMany(ss=>ss.UnitTypeInventory.PerDayInventory).ToList();
         foreach(var o in getobj){
             if(o.RequestOK == "Y"){
                 o.ReleasePeriod = o.ReleasePeriod + 9900;
@@ -229,7 +294,7 @@
         }
     }
     void OpenAll(Allocation alc){
-         var getobj = alc.Split.Where(w=>w.UnitTypeInventory!=null && w.SplitCode_check==true).SelectMany(ss=>ss.UnitTypeInventory.PerDayInventory).ToList();
+        var getobj = alc.Split.Where(w=>w.UnitTypeInventory!=null && w.SplitCode_check==true).SelectMany(ss=>ss.UnitTypeInventory.PerDayInventory).ToList();
         foreach(var o in getobj){
             if(o.RequestOK == "N"){
                 o.ReleasePeriod = o.ReleasePeriod - 9900;
@@ -248,14 +313,14 @@
             unit.ReleasePeriod = unit.ReleasePeriod-9900;
             unit.RequestOk_Check = true;
         }
-        
+
     }
     void DoUpdateInventory(DateTime value)
     {
         Console.WriteLine($"select {value}");
     }
 
-   
+
     async Task DoSearch()
     {
         IsLoading = true;
@@ -269,6 +334,16 @@
         _obj = await ap.GetInventory(rq, User.Country);
         if(_obj.GetInventoryReply != null)
         {
+            foreach(var alc in _obj.GetInventoryReply.Allocation)
+            {
+                bool error = false;
+                if (alc.Split.Count == 1 && alc.Split.Any(a=>a.UnitTypeInventory == null))
+                {
+                    error = true;
+                    alc.ShowAllocation = false;
+                }
+            }
+
             _allocationlist = _obj.GetInventoryReply.Allocation.ToList();
         }
         

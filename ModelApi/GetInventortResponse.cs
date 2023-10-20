@@ -71,6 +71,8 @@ public class PerDayInventory
             _RequestOK_Check = value;
         }
     }
+
+    public bool error = false;
 }
 
 [XmlRoot(ElementName = "UnitTypeInventory")]
@@ -87,6 +89,8 @@ public class UnitTypeInventory
 [XmlRoot(ElementName = "Allocation")]
 public class Allocation
 {
+    public DateTime UpdateToTPdate { get; set; }
+    public bool UpdateToTP { get; set; } = false;
     public bool ShowAllocation { get; set; } = true;
     [XmlElement(ElementName = "SupplierCode")]
     public string SupplierCode { get; set; }

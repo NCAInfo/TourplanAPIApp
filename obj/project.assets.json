@@ -7612,19 +7612,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\veera\\.nuget\\packages\\": {}
+    "C:\\Users\\veera\\.nuget\\packages\\": {},
+    "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Blazor\\TourplanApiApp\\TourplanAPIApp.csproj",
+      "projectUniqueName": "D:\\Blazor\\TourplanAPIApp\\TourplanAPIApp.csproj",
       "projectName": "TourplanAPIApp",
-      "projectPath": "D:\\Blazor\\TourplanApiApp\\TourplanAPIApp.csproj",
+      "projectPath": "D:\\Blazor\\TourplanAPIApp\\TourplanAPIApp.csproj",
       "packagesPath": "C:\\Users\\veera\\.nuget\\packages\\",
-      "outputPath": "D:\\Blazor\\TourplanApiApp\\obj\\",
+      "outputPath": "D:\\Blazor\\TourplanAPIApp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages",
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
         "C:\\Users\\veera\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7632,6 +7640,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
