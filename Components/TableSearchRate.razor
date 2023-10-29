@@ -193,23 +193,27 @@
                     gc.ChildRateApply = gc.ChildRate > 0;
                     gc.InfantRateApply = gc.InfantRate > 0;
 
-                    gc.Extras.AdultExtras.ExtraRates.Ex1Apply = gc.Extras.AdultExtras.ExtraRates.Ex1Rate > 0;
-                    gc.Extras.AdultExtras.ExtraRates.Ex2Apply = gc.Extras.AdultExtras.ExtraRates.Ex2Rate > 0;
-                    gc.Extras.AdultExtras.ExtraRates.Ex3Apply = gc.Extras.AdultExtras.ExtraRates.Ex3Rate > 0;
-                    gc.Extras.AdultExtras.ExtraRates.Ex4Apply = gc.Extras.AdultExtras.ExtraRates.Ex4Rate > 0;
-                    gc.Extras.AdultExtras.ExtraRates.Ex5Apply = gc.Extras.AdultExtras.ExtraRates.Ex5Rate > 0;
+                    if (gc.Extras != null)
+                    {
+                        gc.Extras.AdultExtras.ExtraRates.Ex1Apply = gc.Extras.AdultExtras.ExtraRates.Ex1Rate > 0;
+                        gc.Extras.AdultExtras.ExtraRates.Ex2Apply = gc.Extras.AdultExtras.ExtraRates.Ex2Rate > 0;
+                        gc.Extras.AdultExtras.ExtraRates.Ex3Apply = gc.Extras.AdultExtras.ExtraRates.Ex3Rate > 0;
+                        gc.Extras.AdultExtras.ExtraRates.Ex4Apply = gc.Extras.AdultExtras.ExtraRates.Ex4Rate > 0;
+                        gc.Extras.AdultExtras.ExtraRates.Ex5Apply = gc.Extras.AdultExtras.ExtraRates.Ex5Rate > 0;
 
-                    gc.Extras.ChildExtras.ExtraRates.Ex1Apply = gc.Extras.ChildExtras.ExtraRates.Ex1Rate > 0;
-                    gc.Extras.ChildExtras.ExtraRates.Ex2Apply = gc.Extras.ChildExtras.ExtraRates.Ex2Rate > 0;
-                    gc.Extras.ChildExtras.ExtraRates.Ex3Apply = gc.Extras.ChildExtras.ExtraRates.Ex3Rate > 0;
-                    gc.Extras.ChildExtras.ExtraRates.Ex4Apply = gc.Extras.ChildExtras.ExtraRates.Ex4Rate > 0;
-                    gc.Extras.ChildExtras.ExtraRates.Ex5Apply = gc.Extras.ChildExtras.ExtraRates.Ex5Rate > 0;
+                        gc.Extras.ChildExtras.ExtraRates.Ex1Apply = gc.Extras.ChildExtras.ExtraRates.Ex1Rate > 0;
+                        gc.Extras.ChildExtras.ExtraRates.Ex2Apply = gc.Extras.ChildExtras.ExtraRates.Ex2Rate > 0;
+                        gc.Extras.ChildExtras.ExtraRates.Ex3Apply = gc.Extras.ChildExtras.ExtraRates.Ex3Rate > 0;
+                        gc.Extras.ChildExtras.ExtraRates.Ex4Apply = gc.Extras.ChildExtras.ExtraRates.Ex4Rate > 0;
+                        gc.Extras.ChildExtras.ExtraRates.Ex5Apply = gc.Extras.ChildExtras.ExtraRates.Ex5Rate > 0;
 
-                    gc.Extras.InfantExtras.ExtraRates.Ex1Apply = gc.Extras.InfantExtras.ExtraRates.Ex1Rate > 0;
-                    gc.Extras.InfantExtras.ExtraRates.Ex2Apply = gc.Extras.InfantExtras.ExtraRates.Ex2Rate > 0;
-                    gc.Extras.InfantExtras.ExtraRates.Ex3Apply = gc.Extras.InfantExtras.ExtraRates.Ex3Rate > 0;
-                    gc.Extras.InfantExtras.ExtraRates.Ex4Apply = gc.Extras.InfantExtras.ExtraRates.Ex4Rate > 0;
-                    gc.Extras.InfantExtras.ExtraRates.Ex5Apply = gc.Extras.InfantExtras.ExtraRates.Ex5Rate > 0;
+                        gc.Extras.InfantExtras.ExtraRates.Ex1Apply = gc.Extras.InfantExtras.ExtraRates.Ex1Rate > 0;
+                        gc.Extras.InfantExtras.ExtraRates.Ex2Apply = gc.Extras.InfantExtras.ExtraRates.Ex2Rate > 0;
+                        gc.Extras.InfantExtras.ExtraRates.Ex3Apply = gc.Extras.InfantExtras.ExtraRates.Ex3Rate > 0;
+                        gc.Extras.InfantExtras.ExtraRates.Ex4Apply = gc.Extras.InfantExtras.ExtraRates.Ex4Rate > 0;
+                        gc.Extras.InfantExtras.ExtraRates.Ex5Apply = gc.Extras.InfantExtras.ExtraRates.Ex5Rate > 0;
+                    }
+                    
 
                 }
                 rs.Supplier = DataObj.User;
