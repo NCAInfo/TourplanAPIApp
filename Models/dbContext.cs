@@ -8,5 +8,6 @@ public class dbContext :DbContext
     }
 
     public DbSet<RequestSetRate> RequestSetRate { get; set; }
+    public DbSet<Cancellation> Cancellation { get; set; }
     }
 

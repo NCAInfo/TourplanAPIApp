@@ -1,6 +1,7 @@
 ﻿
 
 
+using DiethelmAPI.ModelDb;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -231,6 +232,61 @@ public class APIService
         var content = await res.Content.ReadAsStringAsync();
         var rsobj = JsonConvert.DeserializeObject<IEnumerable<Product>>(content);
         return rsobj.OrderBy(o => o.Description);
+    }
+
+    public async Task<IEnumerable<GetPolicy>> GetPolicies(string suppliercode, string country)
+    {
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetCancellationBySupplier/{suppliercode}/{country}");
+        var content = await res.Content.ReadAsStringAsync();
+        var rsobj = JsonConvert.DeserializeObject<IEnumerable<GetPolicy>>(content);
+        return rsobj.OrderBy(o => o.Period);
+    }
+
+    public async Task<IEnumerable<GetOption>> GetOptionBySupplier(string suppliercode, string country)
+    {
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetOptionBySupplier/{suppliercode}/{country}");
+        var content = await res.Content.ReadAsStringAsync();
+        var rsobj = JsonConvert.DeserializeObject<IEnumerable<GetOption>>(content);
+        return rsobj.OrderBy(o => o.OptionCode);
+    }
+    public async Task<GetSelectOption> GetSelectOption(string country)
+    {
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetSelectOption/{country}");
+        var content = await res.Content.ReadAsStringAsync();
+        var rsobj = JsonConvert.DeserializeObject<GetSelectOption>(content);
+        return rsobj;
+    }
+    public async Task<Pol> GetPolById(int polid, string country)
+    {
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetPolById/{polid}/{country}");
+        var content = await res.Content.ReadAsStringAsync();
+        var rsobj = JsonConvert.DeserializeObject<Pol>(content);
+        return rsobj;
+    }
+
+    public async Task<bool> PolSave(List<Pol> obj,string country)
+    {
+        string jsonRequest = JsonConvert.SerializeObject(obj);
+        Console.WriteLine(jsonRequest);
+        // Create a StringContent object with the JSON data
+        HttpContent hc = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+        // Perform the HTTP POST request
+        var res = await client.PostAsync(_endPoint + $"/api/Db/PolSave/{country}", hc);
+
+        // Process the response and return the result
+        if (res.IsSuccessStatusCode)
+        {
+            // Deserialize the response content to the ReplyFromGetRate object
+          
+            return true;
+        }
+        else
+        {
+            // Handle the error response or throw an exception
+            return false;
+        }
+      
     }
 }
 

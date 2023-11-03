@@ -36,8 +36,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWxsb2NhdGlvbnNcU3RvcFNhbGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Blazor/TourplanAPIApp/Pages/CancellationPolicy/Page.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FuY2VsbGF0aW9uUG9saWN5XFBhZ2UucmF6b3I=
+[D:/Blazor/TourplanAPIApp/Pages/CancellationPolicy/CancellationList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FuY2VsbGF0aW9uUG9saWN5XENhbmNlbGxhdGlvbkxpc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Blazor/TourplanAPIApp/Pages/Counter.razor]

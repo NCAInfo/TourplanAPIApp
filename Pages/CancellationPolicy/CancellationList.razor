@@ -1,0 +1,458 @@
+﻿@page "/cancellation"
+@using AntDesign.TableModels;
+@using DiethelmAPI.ModelDb;
+@using Newtonsoft.Json;
+@inject APIService ap;
+@inject DbService db;
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager NavManager
+@inject IMessageService _message
+
+<style>
+    .ant-form-item{
+        margin-bottom:5px !important;
+    }
+</style>
+
+<Card Title="Search" Size="small">
+    <Body>
+        <Search @bind-Value="_suppliercode" OnSearch="Search"></Search>
+    </Body>
+</Card>
+
+@if(_policyList != null)
+{
+    <Card Title="Policy" Size="small">
+        <Body>
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th>PERIOD</th>
+                        <th>LEVEL</th>
+                        <th>BOOKING TYPE</th>
+                        <th>MARKUP%</th>
+                        <th>COMM%</th>
+                        <th>RULE SET</th>
+                        <th>APPLIED FORM</th>
+                        <th>FEE TYPE</th>
+                        <th>QUANTITY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var p in _policyList)
+                    {
+                        <tr style="background-color:#DDD">
+                            <td><Button OnClick="()=>ShowPopup(p.Pol_Id)" Icon="copy">Copy</Button> @p.Period</td>
+                            <td>@p.Level</td>
+                            <td>@p.BookingTypes</td>
+                            <td>@(p.MarkUp == "Percentage" ? p.MarkUppc.ToString("N2") : p.MarkUp)</td>
+                            <td>@(p.Comm == "Percentage" ? p.Commpc.ToString("N2") : p.Comm)</td>
+                            <td colspan="4"></td>
+                           
+                        </tr>
+                        if (p.RuleSets.Count() > 0)
+                        {
+                            int i = 1;
+                            @foreach(var r in p.RuleSets)
+                            {
+                                <tr>
+                                     <td></td>
+                                    <td colspan="4" style="text-align:left !important">
+                                        @if(i==1){
+                                            if (p.OptId != null)
+                                            {
+                                                var opt = _optionlist.Where(w => w.Opt_Id == p.OptId).FirstOrDefault();
+                                                if (opt != null)
+                                                {
+                                                    <span>@opt.OptionCode - @opt.OptionName</span>
+                                                }
+                                            }
+                                        }
+                                        
+                                    </td>
+                                  
+                                    <td>@(r.PriceCode?? "Standard")</td>
+                                    
+                                    <td>@r.ApplyForm @(r.DisplayInDay ? "days" : "hours")</td>
+                                    <td>@r.FeeType</td>
+                                    <td>@r.FeeAmount.ToString("N2")</td>
+                                </tr>
+                                i++;
+                            }
+                           
+                        }
+                    }
+                   
+                </tbody>
+            </table>
+        </Body>
+    </Card>
+}
+
+@{
+    RenderFragment footer =
+    @<Template>
+       
+        @if (User.SEC >= 50)
+                    {
+        <Button Class="" OnClick="Save">
+            Save
+        </Button>
+        <Popconfirm OnConfirm="DoApprove" Title="Confirm Copy to Tourplan?">
+            <Button Class="btn-approve">
+                Update To Tourplan
+            </Button>
+        </Popconfirm>
+                    }
+        <Button OnClick="()=>_popup=false" @key="@( "back" )">Close</Button>
+    </Template>;
+}
+
+<Modal Visible="_popup" OnCancel="()=>_popup=false" Title="Cancellation Rule" Footer="footer"  DefaultMaximized="@true">
+    
+    <Form Model="_obj" LabelColSpan="6"
+          WrapperColSpan="18">
+        <div class="row">
+            <div class="col-sm-6">
+                @_obj.PolId
+                <FormItem Label="valid form" Class="upper">
+                    <DatePicker @bind-Value="_obj.DateFrom" Format="dd/MM/yyyy" />
+                </FormItem>
+                <FormItem Label="valid to" Class="upper">
+                    <DatePicker @bind-Value="_obj.DateTo" Format="dd/MM/yyyy" />
+                </FormItem>
+            </div>
+            <div class="col-sm-6">
+                <FormItem Label="FEE CATEGORY">
+
+                </FormItem>
+                <FormItem Label="POLICIES FOR">
+
+                </FormItem>
+            </div>
+        </div>
+        <Tabs DefaultActiveKey="1">
+            <TabPane Tab="SERVICE" Key="1">
+                <h6 class="upper">Cancellation FEE Service Details</h6>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <FormItem Label="SERVICE">
+                            <Select @bind-Value="_obj.ServiceCode" TItem="Srv" TItemValue="string" DataSource="_selectOption.Service" ValueName="@nameof(Srv.Code)" LabelName="@nameof(Srv.Name)"></Select>
+                        </FormItem>
+                        <FormItem Label="MESSAGE FORMAT">
+                            <Select @bind-Value="_obj.MessageFormatCode" TItem="Mty" TItemValue="string" DataSource="_selectOption.Message" ValueName="@nameof(Mty.Code)" LabelName="@nameof(Mty.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="PRICE STRUCTURE">
+                            <Select @bind-Value="_obj.DatabaseAnalysisCode1" TItem="Db1" TItemValue="string" DataSource="_selectOption.PriceSturcture" ValueName="@nameof(Mty.Code)" LabelName="@nameof(Mty.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="GUIDE LANGUAGE">
+                            <Select @bind-Value="_obj.DatabaseAnalysisCode2" TItem="Db2" TItemValue="string" DataSource="_selectOption.GuideLanguage" ValueName="@nameof(Db2.Code)" LabelName="@nameof(Db2.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="TIER">
+                            <Select @bind-Value="_obj.DatabaseAnalysisCode3" TItem="Db3" TItemValue="string" DataSource="_selectOption.Tier" ValueName="@nameof(Db3.Code)" LabelName="@nameof(Db3.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="INVOICE LINE 1">
+                            <Input @bind-Value="_obj.InvoiceText1" MaxLength="60"/>
+                        </FormItem>
+                        <FormItem Label="INVOICE LINE 3">
+                            <Input @bind-Value="_obj.InvoiceText3" MaxLength="60" />
+                        </FormItem>
+                    </div>
+                    <div class="col-sm-6">
+                        <FormItem Label="MARKUP">
+                            <Select @bind-Value="_obj.ApplyMarkup" TItem="Markup" TItemValue="string" DataSource="_selectOption.Markup" ValueName="@nameof(Markup.Value)" LabelName="@nameof(Markup.Name)" Style="width:calc(100% - 240px)"></Select>
+                            <AntDesign.InputNumber @bind-Value="_obj.MarkupPc"></AntDesign.InputNumber>
+                        </FormItem>
+                        <FormItem Label="COMMISSION">
+                            <Select @bind-Value="_obj.ApplyCommission" TItem="Markup" TItemValue="string" DataSource="_selectOption.Markup" ValueName="@nameof(Markup.Value)" LabelName="@nameof(Markup.Name)" Style="width:calc(100% - 240px)"></Select>
+                            <AntDesign.InputNumber @bind-Value="_obj.CommissionPc"></AntDesign.InputNumber>
+                        </FormItem>
+                        <FormItem Label="CASH ADVANCE">
+                            <Select @bind-Value="_obj.DatabaseAnalysisCode4" TItem="Db4" TItemValue="string" DataSource="_selectOption.CashAdvance" ValueName="@nameof(Db4.Code)" LabelName="@nameof(Db4.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="OUTPUT TAX CODE">
+                            <Select @bind-Value="_obj.DatabaseAnalysisCode5" TItem="Db5" TItemValue="string" DataSource="_selectOption.TaxOut" ValueName="@nameof(Db5.Code)" LabelName="@nameof(Db5.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="INPUT TAX CODE">
+                            <Select @bind-Value="_obj.DatabaseAnalysisCode6" TItem="Db6" TItemValue="string" DataSource="_selectOption.TaxIn" ValueName="@nameof(Db6.Code)" LabelName="@nameof(Db6.Description)"></Select>
+                        </FormItem>
+                        <FormItem Label="INVOICE LINE 2">
+                            <Input @bind-Value="_obj.InvoiceText2" MaxLength="60" />
+                        </FormItem>
+                        <FormItem Label="INVOICE LINE 4">
+                            <Input @bind-Value="_obj.InvoiceText4" MaxLength="60" />
+                        </FormItem>
+                        <FormItem Label="">
+                            <Checkbox @bind-Checked="_obj.AppliesExt">ALSO APPLIES TO EXTERNAL SERVICES</Checkbox>
+                        </FormItem>
+                    </div>
+                </div>
+                
+            </TabPane>
+            <TabPane Tab="FEES" Key="2">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <table width="100%" class="table table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>APPLIES FROM</th>
+                                    <th>FCU RANGE</th>
+                                    <th>SCU RANGE</th>
+                                    <th>Fee Type</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var rul in _RulList)
+                                {
+                                    <tr @onclick="()=>SelectRow(rul)" class="@(_selectRul == rul?"bg-info":"")">
+                                        <td>@rul.Period @(rul.DisplayInDays?"Days":"Hours")</td>
+                                        <td>@rul.MinRooms - @rul.MaxRooms</td>
+                                          <td>@rul.MinScu - @rul.MaxScu</td>
+                                           <td>@rul.FeeType</td>
+                                        <td>@rul.FeeAmount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-sm-5">
+                        <h6 class="upper">Price Code Set</h6>
+                        <Button Icon="plus" Size="small" OnClick="AddPriceCode" Class="btn-success">INSERT</Button>
+                        <Button Icon="retweet" Size="small" OnClick="UpdatePriceCode" Class="">UPDATE</Button>
+                        <Button Icon="minus" Size="small" OnClick="DeletePriceCode">DELETE RULE</Button>
+
+                        
+                        <ul class="list-group">
+                            @foreach(var xlm in _obj.Xlms)
+                            {
+                                if(xlm.Xmps.Count() == 0)
+                                {
+                                    <li class="list-group-item @(_selectXlm == xlm?"active":"")" @onclick="()=>SelectXlm(xlm)">STANDARD</li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item @(_selectXlm == xlm?"active":"")" @onclick="()=>SelectXlm(xlm)">@string.Join(", ",xlm.Xmps.Select(s=>s.PriceCode))</li>
+                                }
+                            }
+                        </ul>
+
+                        <h6 class="upper mt-5">CANCEL RULE</h6>
+                        <Button Icon="plus" Size="small" OnClick="AddRule" Class="btn-success">INSERT RULE</Button> 
+                        <Button Icon="minus" Size="small" OnClick="RemoveRul">DELETE RULE</Button>
+
+                        <FormItem Label="APPLIES FROM">
+                            <AntDesign.InputNumber @bind-Value="_selectRul.Period" /> 
+                            <RadioGroup @bind-Value="_selectRul.DisplayInDays" >
+                                <Radio Value="@(false)" TValue="bool">Hour</Radio>
+                                <Radio Value="@(true)" TValue="bool">Day</Radio>
+                               
+                            </RadioGroup>
+                        </FormItem>
+                        <FormItem Label="FEE TYPE">
+                            <Select DataSource="FeeType.FeeTypes()" @bind-Value="_selectRul.FeeType" TItem="FeeType" TItemValue="string" LabelName="@nameof(FeeType.Name)" ValueName="@nameof(FeeType.Value)"></Select>
+                        </FormItem>
+                        <FormItem Label="PERCENTAGE">
+                            <AntDesign.InputNumber @bind-Value="_selectRul.FeeAmount" />
+                        </FormItem>
+                        <FormItem Label="FCU RANGE">
+                            <AntDesign.InputNumber @bind-Value="_selectRul.MinRooms" Min="0" Max="999999" /> <AntDesign.InputNumber @bind-Value="_selectRul.MaxRooms" Min="0" Max="999999" />
+                        </FormItem>
+                        <FormItem Label="SCU RANGE">
+                            <AntDesign.InputNumber @bind-Value="_selectRul.MinScu" Min="0" Max="999999" /> <AntDesign.InputNumber @bind-Value="_selectRul.MaxScu" Min="0" Max="999999" />
+                        </FormItem>
+                    </div>
+
+                  </div>
+            </TabPane>
+        </Tabs>
+    
+    <div class="row mt-5">
+        <div class="col-sm-12">
+                @if (_optionlist.Count() > 0)
+                {
+                <CheckboxGroup @bind-Value="_selectoptionlist" >
+                    @foreach (var o in _optionlist)
+                    {
+                        <p><Checkbox Label="@o.Opt_Id.ToString()"  />@o.OptionCode @o.OptionName</p>
+                    }
+                    </CheckboxGroup>
+                }
+        </div>
+    </div>
+   
+    </Form>
+
+</Modal>
+
+<Modal Title="PRICE CODE" Visible="_pricecodeShow" OnCancel="()=>_pricecodeShow=false" Width="1000" OnOk="DoSelectXlm" MaxBodyHeight="@("50vh")">
+    <div class="row">
+        <div class="col-sm-5">
+            <div style="height:100vh; overflow:scroll">
+                <ul class="list-group">
+                    @{
+                        var pcExist = _selectXlm.Xmps.Select(s => s.PriceCode).ToList();
+                    }
+                    @foreach (var pc in _pricecodelist.Where(w => !pcExist.Contains(w.Code)))
+                    {
+
+                        <li class="list-group-item @(_selectPC == pc?"active":"")" @onclick="()=>SelectPC(pc)">@pc.Code - @pc.Description</li>
+
+                    }
+                </ul>
+            </div> 
+           
+        </div>
+        <div class="col-sm-2">
+            <Button Icon="right" OnClick="SelectPriceCode"> </Button><br />
+            <Button Icon="left" OnClick="RemovePriceCode"></Button>
+        </div>
+        <div class="col-sm-5">
+              <ul class="list-group">
+            @foreach (var xmp in _selectXlm.Xmps)
+            {
+                    <li class="list-group-item @(_selectPCExist == xmp?"active":"")" @onclick="()=>_selectPCExist =xmp">@xmp.PriceCode</li>
+            }
+            </ul>
+        </div>
+    </div>
+</Modal>
+
+@code {
+    bool _pricecodeShow { get; set; } = false;
+    bool _popup { get; set; } = false;
+    string _suppliercode { get; set; }
+
+    IEnumerable<GetPolicy> _policyList { get; set; }
+    List<Rul> _RulList { get; set; } = new List<Rul>();
+    Rul _selectRul { get; set; } = new Rul();
+    protected LoginModel User = new LoginModel();
+    GetSelectOption _selectOption { get; set; }
+    Xlm _selectXlm { get; set; }
+    Pol _obj { get; set; } = new Pol();
+    List<PriceCode> _pricecodelist { get; set; } = new List<PriceCode>();
+    PriceCode _selectPC { get; set; } = new PriceCode();
+    Xmp _selectPCExist { get; set; } = new Xmp();
+    IEnumerable<GetOption> _optionlist { get; set; } = new List<GetOption>();
+    string[] _selectoptionlist { get; set; } 
+
+
+    void SelectPC(PriceCode pc)
+    {
+        _selectPC = pc;
+    }
+    void DeletePriceCode()
+    {
+        if(_selectXlm != null)
+        {
+            _obj.Xlms.Remove(_selectXlm);
+        }
+    }
+    void SelectPriceCode()
+    {
+
+        _selectXlm.Xmps.Add(new Xmp { PriceCode = _selectPC.Code });
+    }
+    void RemovePriceCode()
+    {
+
+        _selectXlm.Xmps.Remove(_selectPCExist);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userjson = await localStorage.GetAsync<string>("user");
+        User = JsonConvert.DeserializeObject<LoginModel>(userjson.Value);
+        _selectOption = await ap.GetSelectOption(User.Country);
+        _pricecodelist = await ap.GetPriceCodeDetail(User.Country);
+    }
+
+    async Task Search()
+    {
+        _policyList = await ap.GetPolicies(_suppliercode, User.Country);
+        if(_policyList.Count() > 0)
+        {
+            _optionlist = await ap.GetOptionBySupplier(_suppliercode, User.Country);
+        }
+    }
+
+    async Task DoApprove()
+    {
+        var a = _obj;
+        await _message.Success("Updated to Tourplan");
+        _popup = false;
+    }
+
+    async Task ShowPopup(int polid)
+    {
+        _popup = true;
+        _obj = await ap.GetPolById(polid,User.Country);
+    }
+    void DoSelectXlm()
+    {
+        _RulList = _selectXlm.Ruls.ToList();
+        _pricecodeShow = false;
+    }
+    void SelectXlm(Xlm _selectObj)
+    {
+        _selectXlm = _selectObj;
+        _RulList = _selectObj.Ruls.ToList();
+        Console.WriteLine(_selectObj.PolId);
+    }
+
+    void SelectRow(Rul obj)
+    {
+        _selectRul = obj;
+        Console.WriteLine(obj.RulId);
+    }
+
+    async Task Save()
+    {
+        var a = _selectoptionlist;
+        List<Pol> pollist = new List<Pol>();
+        if(_selectoptionlist.Count() > 0)
+        {
+            foreach (var optid in _selectoptionlist)
+            {
+                var newpol = Functions.CloneObject(_obj);
+                newpol.OptId = Convert.ToInt32(optid);
+                pollist.Add(newpol);
+            }
+            await ap.PolSave(pollist, User.Country);
+        }
+       
+        var jsondata = JsonConvert.SerializeObject(_obj);
+    }
+
+    void UpdatePriceCode()
+    {
+
+        _pricecodeShow = true;
+    }
+    void AddPriceCode()
+    {
+        _pricecodeShow = true;
+        var xlm = new Xlm();
+        xlm.Ruls = new List<Rul>();
+
+        _obj.Xlms.Add(xlm);
+        _selectXlm = xlm;
+    }
+
+    void AddRule()
+    {
+        Rul newobj = new Rul();
+        _RulList.Add(newobj);
+        _selectRul = newobj;
+        _selectXlm.Ruls.Add(newobj);
+    }
+    void RemoveRul()
+    {
+        _selectXlm.Ruls.Remove(_selectRul);
+    }
+    void OnChange(string[] checkedValues)
+    {
+        Console.WriteLine($"checked = {JsonConvert.SerializeObject(checkedValues)}");
+    }
+}

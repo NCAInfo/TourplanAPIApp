@@ -57,5 +57,23 @@ public class DbService
         }
 
     }
+
+    public IEnumerable<Cancellation> CancellationGetAll(LoginModel username)
+    {
+        IEnumerable<Cancellation> obj = new List<Cancellation>();
+        if (username.SEC >= 70)
+        {
+            obj = db.Cancellation.Where(w => w.Country == username.Country && !w.IsPublish).ToArray();
+        }
+        else
+        {
+            obj = db.Cancellation.Where(w => w.CreateBy == username.Username && w.Country == username.Country && !w.IsPublish).ToArray();
+        }
+
+        return obj;
+        
+    }
+
+
 }
 
