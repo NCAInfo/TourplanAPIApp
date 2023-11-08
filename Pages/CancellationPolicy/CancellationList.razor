@@ -2,6 +2,7 @@
 @using AntDesign.TableModels;
 @using DiethelmAPI.ModelDb;
 @using Newtonsoft.Json;
+@using System.ComponentModel.DataAnnotations;
 @inject APIService ap;
 @inject DbService db;
 @inject ProtectedLocalStorage localStorage
@@ -9,24 +10,167 @@
 @inject IMessageService _message
 
 <style>
-    .ant-form-item{
-        margin-bottom:5px !important;
-    }
+
 </style>
 
-<Card Title="Search" Size="small">
+<Card Title="Search" Size="small" Class="mt-2">
     <Body>
-        <Search @bind-Value="_suppliercode" OnSearch="Search"></Search>
+        <Form Model="_form" OnFinish="Search" Layout="vertical">
+            <div class="row">
+                <div class="col-sm-3">
+                    <FormItem Label="Supplier" Class="mb-1">
+                        <Select DataSource="_supplierList" @bind-Value="_form.supplier" TItem="Supplier" TItemValue="string"
+                                        EnableSearch LabelName="@nameof(Supplier.Name)" ValueName="@nameof(Supplier.Code)">
+                         </Select>
+
+                     </FormItem>
+                 </div>
+                 <div class="col-sm-3">
+                     <label>DATE FROM (ddmmyy)</label>
+                     <input id="startDate" @onchange="@((args) => startdate = args.Value.ToString())" value="@startdate" class="form-control" placeholder="ddmmyy" />
+                 </div>
+                 <div class="col-sm-3">
+                     <label>DATE TO (ddmmyy)</label>
+                     <input id="endDate" @onchange="@((args) => enddate = args.Value.ToString())" value="@enddate" class="form-control" placeholder="ddmmyy" />
+                 </div>
+                 <div class="col-sm-3">
+
+                     <button type="submit" class="btn btn-primary mt-4">search</button>
+                 </div>
+             </div>
+         </Form>
     </Body>
 </Card>
 
 @if(_policyList != null)
 {
-    <Card Title="Policy" Size="small">
+    <Card Title="Policy" Size="small" Class="mt-2 SearchResult" Loading="_searchLoad">
         <Body>
-            <table class="table table-bordered ">
+           <Table DataSource="_policyList" HidePagination PageSize="1000">
+               <ActionColumn>
+                    <Button OnClick="()=>CopyPol(context)" Icon="copy">Copy</Button>
+               </ActionColumn>
+
+               <PropertyColumn Property="c=>c.DateFrom" Title="Date From" Sortable Format="dd-MM-yyyy">
+               </PropertyColumn>
+                 <PropertyColumn Property="c=>c.DateTo" Title="Date To" Sortable Format="dd-MM-yyyy">
+                 </PropertyColumn>
+                 <PropertyColumn Property="c=>c.SupplierCode" Title="Supplier" Sortable></PropertyColumn>
+                 <PropertyColumn Property="c=>c.Level" Title="LEVEL" Sortable >
+                 </PropertyColumn>
+                 <Column TData="string" Title="RULE SET">
+                     <table class="table table-bordered table-striped">
+                         <thead>
+                             <tr>
+                                 <th>OPTION</th>
+                                  <th>PRICE CODE</th>
+                                   <th>APPLY FROM</th>
+                                    <th>FEE TYPE</th>
+                             <th>FEE AMOUNT</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                     @{
+                        int i = 1;
+                    
+                        foreach(var r in context.RuleSets)
+                        {
+                            <tr>
+                                <td>
+                                 @if(i==1){
+                                    <span>@context.OptionName</span>
+                                 }
+                                </td>
+                                        <td>@(r.PriceCode ?? "Standard")</td>
+
+                                        <td>@r.ApplyForm @(r.DisplayInDay ? "days" : "hours")</td>
+                                        <td>@r.FeeType</td>
+                                        <td>@r.FeeAmount.ToString("N2")</td>
+                            </tr>
+                        }
+                            }
+                        </tbody>
+                    </table>
+                 </Column>
+           </Table>
+          
+        </Body>
+    </Card>
+}
+@if (_cancellationLocalList.Count() > 0)
+{
+    <Card Title="AMEND" Size="small" Class="mt-2 AmendResult">
+        <Body>
+            <Table DataSource="_cancellationLocalList" HidePagination PageSize="1000">
+                 
+                     <ActionColumn>
+                         <Button OnClick="()=>ShowPopup(context)" Icon="edit">Edit</Button>
+                     </ActionColumn>
+
+                     <PropertyColumn Property="c=>c.DateFrom" Title="Date From" Sortable Format="dd-MM-yyyy">
+                 </PropertyColumn>
+                 <PropertyColumn Property="c=>c.DateTo" Title="Date To" Sortable Format="dd-MM-yyyy">
+                 </PropertyColumn>
+                 <PropertyColumn Property="c=>c.SupplierCode" Title="Supplier" Sortable></PropertyColumn>
+                 <Column TData="string" Title="LEVEL" >
+                     @{
+                        var pol = JsonConvert.DeserializeObject<GetPolicy>(context.JsonGetPolicy);
+                          <span>@pol.Level</span>   
+                    }
+             </Column>
+             <Column TData="string" Title="RULE SET">
+                  @{
+                      var pol = JsonConvert.DeserializeObject<GetPolicy>(context.JsonGetPolicy);
+                      }
+                 <table class="table table-bordered table-striped">
+                     <thead>
+                         <tr>
+                             <th>OPTION</th>
+                             <th>PRICE CODE</th>
+                             <th>APPLY FROM</th>
+                             <th>FEE TYPE</th>
+                             <th>FEE AMOUNT</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         @{
+                                int i = 1;
+
+                                foreach (var r in pol.RuleSets)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (i == 1)
+                                            {
+                                                <span>@context.OptionName</span>
+                                            }
+                                        </td>
+                                        <td>@(r.PriceCode ?? "Standard")</td>
+
+                                        <td>@r.ApplyForm @(r.DisplayInDay ? "days" : "hours")</td>
+                                        <td>@r.FeeType</td>
+                                        <td>@r.FeeAmount.ToString("N2")</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </Column>
+                <PropertyColumn Property="c=>c.Status" Sortable Filterable Title="Status"></PropertyColumn>
+                <ActionColumn Width="40">
+                     <Popconfirm Title="Confirm Delete?" OnConfirm="()=>DoDelete(context)">
+                         <Button Icon="delete" Danger></Button>
+                     </Popconfirm>
+                </ActionColumn>
+            </Table>
+
+
+
+         @*    <table class="table table-bordered ">
                 <thead>
                     <tr>
+                        <th width="100">#</th>
+                       
                         <th>PERIOD</th>
                         <th>LEVEL</th>
                         <th>BOOKING TYPE</th>
@@ -36,76 +180,88 @@
                         <th>APPLIED FORM</th>
                         <th>FEE TYPE</th>
                         <th>QUANTITY</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(var p in _policyList)
+                    @foreach (var c in _cancellationLocalList)
                     {
+                        var p = JsonConvert.DeserializeObject<GetPolicy>(c.JsonGetPolicy);
                         <tr style="background-color:#DDD">
-                            <td><Button OnClick="()=>ShowPopup(p.Pol_Id)" Icon="copy">Copy</Button> @p.Period</td>
+                            <td><Button OnClick="()=>ShowPopup(c)" Icon="edit">Edit</Button></td>
+                            <td>@p.Period</td>
                             <td>@p.Level</td>
                             <td>@p.BookingTypes</td>
                             <td>@(p.MarkUp == "Percentage" ? p.MarkUppc.ToString("N2") : p.MarkUp)</td>
                             <td>@(p.Comm == "Percentage" ? p.Commpc.ToString("N2") : p.Comm)</td>
                             <td colspan="4"></td>
-                           
+                            <td>@c.Status</td>
+                            <td>
+                                <Popconfirm Title="Confirm Delete?" OnConfirm="()=>DoDelete(c)">
+                                <Button Icon="delete" Danger></Button>
+                                 </Popconfirm>
+                            </td>
+
                         </tr>
                         if (p.RuleSets.Count() > 0)
                         {
                             int i = 1;
-                            @foreach(var r in p.RuleSets)
+                            @foreach (var r in p.RuleSets)
                             {
                                 <tr>
-                                     <td></td>
-                                    <td colspan="4" style="text-align:left !important">
-                                        @if(i==1){
+                                    
+                                    <td colspan="6" style="text-align:left !important">
+                                        @if (i == 1)
+                                        {
                                             if (p.OptId != null)
                                             {
-                                                var opt = _optionlist.Where(w => w.Opt_Id == p.OptId).FirstOrDefault();
-                                                if (opt != null)
-                                                {
-                                                    <span>@opt.OptionCode - @opt.OptionName</span>
-                                                }
+
+                                                <span>@c.SupplierCode - @p.OptionName</span>
+
                                             }
                                         }
-                                        
+
                                     </td>
-                                  
-                                    <td>@(r.PriceCode?? "Standard")</td>
-                                    
+
+                                    <td>@(r.PriceCode ?? "Standard")</td>
+
                                     <td>@r.ApplyForm @(r.DisplayInDay ? "days" : "hours")</td>
                                     <td>@r.FeeType</td>
-                                    <td>@r.FeeAmount.ToString("N2")</td>
+                                    <td colspan="2">@r.FeeAmount.ToString("N2")</td>
                                 </tr>
                                 i++;
                             }
-                           
+
                         }
                     }
-                   
+
                 </tbody>
-            </table>
+            </table> *@
         </Body>
     </Card>
 }
-
 @{
     RenderFragment footer =
     @<Template>
-       
+        <Button OnClick="()=>{_selectCancellation.Status=Status.OnProgress; Save();} " Class="btn-warning">
+            On Progress
+        </Button>
+
+        <Button OnClick="()=>{_selectCancellation.Status=Status.WaitingApprove; Save(); _popup=false;}" Type="primary">
+            Done
+        </Button>
         @if (User.SEC >= 50)
                     {
-        <Button Class="" OnClick="Save">
-            Save
-        </Button>
-        <Popconfirm OnConfirm="DoApprove" Title="Confirm Copy to Tourplan?">
+        <Popconfirm OnConfirm="UpdateTourplan" Title="Confirm Update to Tourplan?">
             <Button Class="btn-approve">
-                Update To Tourplan
+                Approve
             </Button>
         </Popconfirm>
                     }
         <Button OnClick="()=>_popup=false" @key="@( "back" )">Close</Button>
     </Template>;
+
 }
 
 <Modal Visible="_popup" OnCancel="()=>_popup=false" Title="Cancellation Rule" Footer="footer"  DefaultMaximized="@true">
@@ -114,7 +270,7 @@
           WrapperColSpan="18">
         <div class="row">
             <div class="col-sm-6">
-                @_obj.PolId
+               
                 <FormItem Label="valid form" Class="upper">
                     <DatePicker @bind-Value="_obj.DateFrom" Format="dd/MM/yyyy" />
                 </FormItem>
@@ -124,10 +280,19 @@
             </div>
             <div class="col-sm-6">
                 <FormItem Label="FEE CATEGORY">
-
+                    <Select Disabled @bind-Value="_obj.ExternalFees" DataSource="ExternalFee.ExternalFees()" TItem="ExternalFee" TItemValue="bool" LabelName="@nameof(ExternalFee.Name)" ValueName="@nameof(ExternalFee.Value)">
+                      
+                    </Select>
                 </FormItem>
-                <FormItem Label="POLICIES FOR">
-
+               <FormItem Label="POLICIES FOR">
+                    <Select @bind-Value="_obj.BookingType" TItem="string" TItemValue="string">
+                        <SelectOptions>
+                            <SimpleSelectOption Value="A" Label="All Bookings"></SimpleSelectOption>
+                            <SimpleSelectOption Value="E" Label="FIT and Group"></SimpleSelectOption>
+                            <SimpleSelectOption Value="F" Label="FIT Only"></SimpleSelectOption>
+                            <SimpleSelectOption Value="G" Label="Group Only"></SimpleSelectOption>
+                        </SelectOptions>
+                    </Select>
                 </FormItem>
             </div>
         </div>
@@ -154,9 +319,9 @@
                         <FormItem Label="INVOICE LINE 1">
                             <Input @bind-Value="_obj.InvoiceText1" MaxLength="60"/>
                         </FormItem>
-                        <FormItem Label="INVOICE LINE 3">
+                       @*  <FormItem Label="INVOICE LINE 3">
                             <Input @bind-Value="_obj.InvoiceText3" MaxLength="60" />
-                        </FormItem>
+                        </FormItem> *@
                     </div>
                     <div class="col-sm-6">
                         <FormItem Label="MARKUP">
@@ -179,9 +344,9 @@
                         <FormItem Label="INVOICE LINE 2">
                             <Input @bind-Value="_obj.InvoiceText2" MaxLength="60" />
                         </FormItem>
-                        <FormItem Label="INVOICE LINE 4">
+                      @*   <FormItem Label="INVOICE LINE 4">
                             <Input @bind-Value="_obj.InvoiceText4" MaxLength="60" />
-                        </FormItem>
+                        </FormItem> *@
                         <FormItem Label="">
                             <Checkbox @bind-Checked="_obj.AppliesExt">ALSO APPLIES TO EXTERNAL SERVICES</Checkbox>
                         </FormItem>
@@ -242,14 +407,24 @@
                         <Button Icon="plus" Size="small" OnClick="AddRule" Class="btn-success">INSERT RULE</Button> 
                         <Button Icon="minus" Size="small" OnClick="RemoveRul">DELETE RULE</Button>
 
-                        <FormItem Label="APPLIES FROM">
-                            <AntDesign.InputNumber @bind-Value="_selectRul.Period" /> 
-                            <RadioGroup @bind-Value="_selectRul.DisplayInDays" >
-                                <Radio Value="@(false)" TValue="bool">Hour</Radio>
-                                <Radio Value="@(true)" TValue="bool">Day</Radio>
-                               
-                            </RadioGroup>
-                        </FormItem>
+                        @if (!_obj.ExternalFees)
+                        {
+                            <FormItem Label="APPLIES FROM">
+                                <AntDesign.InputNumber @bind-Value="_selectRul.Period" />
+                                <RadioGroup @bind-Value="_selectRul.DisplayInDays">
+                                    <Radio Value="@(false)" TValue="bool">Hour</Radio>
+                                    <Radio Value="@(true)" TValue="bool">Day</Radio>
+
+                                </RadioGroup>
+                            </FormItem>
+                        }
+                        else
+                        {
+                            <FormItem Label="APPLIES FROM">
+                                <DatePicker @bind-Value="_selectRul.AppliesFrom" />
+                            </FormItem>
+                        }
+
                         <FormItem Label="FEE TYPE">
                             <Select DataSource="FeeType.FeeTypes()" @bind-Value="_selectRul.FeeType" TItem="FeeType" TItemValue="string" LabelName="@nameof(FeeType.Name)" ValueName="@nameof(FeeType.Value)"></Select>
                         </FormItem>
@@ -270,14 +445,15 @@
     
     <div class="row mt-5">
         <div class="col-sm-12">
+           <h6 class="upper">Option Code</h6>
                 @if (_optionlist.Count() > 0)
                 {
-                <CheckboxGroup @bind-Value="_selectoptionlist" >
-                    @foreach (var o in _optionlist)
-                    {
-                        <p><Checkbox Label="@o.Opt_Id.ToString()"  />@o.OptionCode @o.OptionName</p>
-                    }
+
+                    <CheckboxGroup @bind-Value="_selectoptionlist" Options="ckeckAllOptions.ToArray()" >
+                       
                     </CheckboxGroup>
+
+             
                 }
         </div>
     </div>
@@ -320,11 +496,20 @@
 </Modal>
 
 @code {
+
+    FormSearch _form = new FormSearch();
+    bool _searchLoad { get; set; } = false;
+    string startdate { get; set; } = DateTime.Now.ToString("ddMMyy");
+    string enddate { get; set; } = DateTime.Now.AddMonths(1).ToString("ddMMyy");
+
     bool _pricecodeShow { get; set; } = false;
     bool _popup { get; set; } = false;
     string _suppliercode { get; set; }
-
+    IEnumerable<Supplier> _supplierList { get; set; } = new List<Supplier>();
     IEnumerable<GetPolicy> _policyList { get; set; }
+    List<GetPolicy> _policyLocalList { get; set; } = new List<GetPolicy>();
+    IEnumerable<Cancellation> _cancellationLocalList { get; set; } = new List<Cancellation>();
+    Cancellation _selectCancellation { get; set; } = new Cancellation();
     List<Rul> _RulList { get; set; } = new List<Rul>();
     Rul _selectRul { get; set; } = new Rul();
     protected LoginModel User = new LoginModel();
@@ -335,9 +520,11 @@
     PriceCode _selectPC { get; set; } = new PriceCode();
     Xmp _selectPCExist { get; set; } = new Xmp();
     IEnumerable<GetOption> _optionlist { get; set; } = new List<GetOption>();
-    string[] _selectoptionlist { get; set; } 
+    string[] _selectoptionlist { get; set; }
 
 
+
+    List<CheckboxOption> ckeckAllOptions { get; set; } = new List<CheckboxOption>();
     void SelectPC(PriceCode pc)
     {
         _selectPC = pc;
@@ -364,30 +551,70 @@
     {
         var userjson = await localStorage.GetAsync<string>("user");
         User = JsonConvert.DeserializeObject<LoginModel>(userjson.Value);
+        _supplierList = await ap.SuppliersGetAll(User.Country);
         _selectOption = await ap.GetSelectOption(User.Country);
         _pricecodelist = await ap.GetPriceCodeDetail(User.Country);
+        CancellationLoad();
     }
 
     async Task Search()
     {
-        _policyList = await ap.GetPolicies(_suppliercode, User.Country);
-        if(_policyList.Count() > 0)
+        if (!string.IsNullOrEmpty(_form.supplier))
         {
-            _optionlist = await ap.GetOptionBySupplier(_suppliercode, User.Country);
+            _searchLoad = true;
+            var sdate = ConvertDate(startdate);
+            var edate = ConvertDate(enddate);
+            _policyList = await ap.GetPolicies(_form.supplier, sdate.ToString("yyyy-MM-dd"), edate.ToString("yyyy-MM-dd"), User.Country);
+
+            _optionlist = await ap.GetOptionBySupplier(_form.supplier, User.Country);
         }
+        else
+        {
+            await _message.Error("Please Select Supplier");
+        }
+        _searchLoad = false;
     }
 
-    async Task DoApprove()
-    {
-        var a = _obj;
-        await _message.Success("Updated to Tourplan");
-        _popup = false;
-    }
+    // async Task DoApprove()
+    // {
+    //     var a = _obj;
+    //     await _message.Success("Updated to Tourplan");
+    //     _popup = false;
+    // }
 
-    async Task ShowPopup(int polid)
+    async Task ShowPopup(Cancellation objCan)
     {
+
+        _optionlist = await ap.GetOptionBySupplier(objCan.SupplierCode, User.Country);
+        string[] getOptionApply = new string[0];
+        if (objCan.JsonOptionApply != null)
+        {
+            getOptionApply = JsonConvert.DeserializeObject<List<string>>(objCan.JsonOptionApply).ToArray();
+        }
+        ckeckAllOptions = new List<CheckboxOption>();
+        foreach (var o in _optionlist)
+        {
+            ckeckAllOptions.Add(new CheckboxOption {
+                    Label = string.Format("{0}-{1}", o.OptionCode, o.OptionName),
+                    Value = o.Opt_Id.ToString(),
+                    Checked = (getOptionApply.Contains(o.Opt_Id.ToString()) ? true : false)
+        });
+        }
+        _selectoptionlist = getOptionApply;
+        _selectCancellation = objCan;
         _popup = true;
-        _obj = await ap.GetPolById(polid,User.Country);
+        _obj = JsonConvert.DeserializeObject<Pol>(objCan.JsonData);
+        var chkxmlfirst = _obj.Xlms.FirstOrDefault();
+        if (chkxmlfirst != null)
+        {
+            _selectXlm = chkxmlfirst;
+            _RulList = chkxmlfirst.Ruls.ToList();
+            var rulfirst = chkxmlfirst.Ruls.FirstOrDefault();
+            if(rulfirst != null)
+            {
+                _selectRul = rulfirst;
+            }
+        }
     }
     void DoSelectXlm()
     {
@@ -398,20 +625,60 @@
     {
         _selectXlm = _selectObj;
         _RulList = _selectObj.Ruls.ToList();
-        Console.WriteLine(_selectObj.PolId);
+        var rulfirst = _selectXlm.Ruls.FirstOrDefault();
+        if (rulfirst != null)
+        {
+            _selectRul = rulfirst;
+        }
     }
 
     void SelectRow(Rul obj)
     {
         _selectRul = obj;
-        Console.WriteLine(obj.RulId);
+
     }
 
     async Task Save()
     {
-        var a = _selectoptionlist;
+
+        var p = JsonConvert.DeserializeObject<GetPolicy>(_selectCancellation.JsonGetPolicy);
+        p.Period = _obj.DateFrom.ToString("dd-MM-yyyy") + "-" + _obj.DateTo.ToString("dd-MM-yyyy");
+        p.RuleSets = new List<RuleSet>();
+        foreach(var xlm in _obj.Xlms)
+        {
+
+            foreach(var r in xlm.Ruls)
+            {
+                RuleSet rs = new RuleSet();
+                rs.ApplyForm = r.Period;
+                rs.DisplayInDay = r.DisplayInDays;
+                rs.PriceCode = string.Join(",", xlm.Xmps.Select(s=>s.PriceCode));
+                rs.FeeType = r.FeeType;
+                rs.FeeAmount = r.FeeAmount;
+                p.RuleSets.Add(rs);
+            }
+        }
+
+
+        if (_selectoptionlist != null && _selectoptionlist.Count() > 0)
+        {
+            _selectCancellation.JsonOptionApply = JsonConvert.SerializeObject(_selectoptionlist);
+        }
+
+        _selectCancellation.DateFrom =_obj.DateFrom;
+        _selectCancellation.DateTo = _obj.DateTo;
+        _selectCancellation.JsonGetPolicy = JsonConvert.SerializeObject(p);
+        _selectCancellation.JsonData = JsonConvert.SerializeObject(_obj);
+        _selectCancellation.LastUpdated = DateTime.Now;
+        db.CancellationSave(_selectCancellation);
+        CancellationLoad();
+        await _message.Info("Saved!!");
+    }
+
+    async Task UpdateTourplan()
+    {
         List<Pol> pollist = new List<Pol>();
-        if(_selectoptionlist.Count() > 0)
+        if (_selectoptionlist !=null && _selectoptionlist.Count() > 0)
         {
             foreach (var optid in _selectoptionlist)
             {
@@ -419,10 +686,46 @@
                 newpol.OptId = Convert.ToInt32(optid);
                 pollist.Add(newpol);
             }
-            await ap.PolSave(pollist, User.Country);
+            _selectCancellation.JsonOptionApply = JsonConvert.SerializeObject(_selectoptionlist);
         }
-       
-        var jsondata = JsonConvert.SerializeObject(_obj);
+        else
+        {
+            var p = JsonConvert.DeserializeObject<GetPolicy>(_selectCancellation.JsonGetPolicy);
+            p.Period = _obj.DateFrom.ToString("dd-MM-yyyy") + "-" + _obj.DateTo.ToString("dd-MM-yyyy");
+            p.RuleSets = new List<RuleSet>();
+            foreach (var xlm in _obj.Xlms)
+            {
+
+                foreach (var r in xlm.Ruls)
+                {
+                    RuleSet rs = new RuleSet();
+                    rs.ApplyForm = r.Period;
+                    rs.DisplayInDay = r.DisplayInDays;
+                    rs.PriceCode = string.Join(",", xlm.Xmps.Select(s => s.PriceCode));
+                    rs.FeeType = r.FeeType;
+                    rs.FeeAmount = r.FeeAmount;
+                    p.RuleSets.Add(rs);
+                }
+            }
+            _selectCancellation.JsonGetPolicy = JsonConvert.SerializeObject(p);
+            _obj.OptId = 0;
+            pollist.Add(_obj);
+
+        }
+        _selectCancellation.DateFrom = _obj.DateFrom;
+        _selectCancellation.DateTo = _obj.DateTo;
+        _selectCancellation.JsonData = JsonConvert.SerializeObject(_obj);
+        _selectCancellation.LastUpdated = DateTime.Now;
+        _selectCancellation.DatePublish = DateTime.Now;
+        _selectCancellation.PublishBy = User.Username;
+        _selectCancellation.IsPublish = true;
+        db.CancellationSave(_selectCancellation);
+
+        var upd =  await ap.PolSave(pollist, User.Country);
+        CancellationLoad();
+        _popup = false;
+        await _message.Info("Update completed");
+
     }
 
     void UpdatePriceCode()
@@ -438,11 +741,28 @@
 
         _obj.Xlms.Add(xlm);
         _selectXlm = xlm;
+        Rul newobj = new Rul();
+        newobj.DisplayInDays = true;
+        newobj.MaxRooms = 999999;
+        newobj.MaxScu = 999999;
+        newobj.MinRooms = 1;
+        newobj.MinScu = 1;
+        newobj.FeeType = "P";
+        newobj.AppliesFrom = DateTime.Today;
+        _RulList.Add(newobj);
+        _selectRul = newobj;
+        _selectXlm.Ruls.Add(newobj);
     }
 
     void AddRule()
     {
         Rul newobj = new Rul();
+        newobj.DisplayInDays = true;
+        newobj.MaxRooms = 999999;
+        newobj.MaxScu = 999999;
+        newobj.MinRooms = 1;
+        newobj.MinScu = 1;
+        newobj.FeeType = "P";
         _RulList.Add(newobj);
         _selectRul = newobj;
         _selectXlm.Ruls.Add(newobj);
@@ -450,9 +770,79 @@
     void RemoveRul()
     {
         _selectXlm.Ruls.Remove(_selectRul);
+        _RulList = _selectXlm.Ruls.ToList();
     }
     void OnChange(string[] checkedValues)
     {
         Console.WriteLine($"checked = {JsonConvert.SerializeObject(checkedValues)}");
+    }
+
+    async Task CopyPol(GetPolicy pol)
+    {
+        var getpol = await ap.GetPolById(pol.Pol_Id,User.Country);
+        Cancellation obj = new Cancellation();
+        obj.DateFrom = pol.DateFrom;
+        obj.DateTo = pol.DateTo;
+        obj.CreateBy = User.Username;
+        obj.CreateDate = DateTime.Now;
+        obj.Country = User.Country;
+        obj.SupplierCode = _form.supplier;
+        obj.OptionName = pol.OptionName??"";
+        obj.IsPublish = false;
+        obj.JsonGetPolicy = JsonConvert.SerializeObject(pol);
+        obj.JsonData = JsonConvert.SerializeObject(getpol);
+        obj.polid = pol.Pol_Id;
+        obj.Status = Status.New;
+
+        var objsave =  db.CancellationSave(obj);
+        CancellationLoad();
+        await _message.Info("Copy to Amend Done!");
+    }
+
+    void CancellationLoad()
+    {
+        _cancellationLocalList = db.CancellationGetAll(User);
+    }
+
+    void DoDelete(Cancellation obj)
+    {
+        var a = db.CancellationDelete(obj);
+        CancellationLoad();
+    }
+    private class FormSearch
+    {
+        [Required]
+        public string supplier { get; set; }
+        public DateTime date_From { get; set; }
+        public DateTime date_To { get; set; }
+    }
+
+    private class ExternalFee
+    {
+        public string Name { get; set; }
+        public bool Value { get; set; }
+
+        public static List<ExternalFee> ExternalFees()
+        {
+            List<ExternalFee> exlist = new List<ExternalFee>();
+            exlist.Add(new ExternalFee { Name = "Internal / Relative Date", Value = false });
+            exlist.Add(new ExternalFee { Name = "Internal / Fixed Date", Value = true });
+            // exlist.Add(new ExternalFee { Name = "External", Value = false });
+            return exlist;
+        }
+    }
+
+    private DateTime ConvertDate(string inputText)
+    {
+        if (DateTime.TryParseExact(inputText, "ddMMyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+        {
+            string formattedDate = parsedDate.ToString("yyyy-MM-dd");
+            return parsedDate;
+        }
+        else
+        {
+            Console.WriteLine("Invalid date format");
+            return parsedDate;
+        }
     }
 }

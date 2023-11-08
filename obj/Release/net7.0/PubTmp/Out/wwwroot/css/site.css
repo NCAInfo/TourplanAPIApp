@@ -33,10 +33,28 @@ h6{
     font-weight:900;
     border-bottom:1px #ddd solid;
 }
+
+.ant-form-item {
+    margin-bottom: 5px !important;
+}
+
+.SearchResult > .ant-card-head {
+    background-color: rgb(25,135,84);
+    color: #FFF;
+}
+
+.AmendResult > .ant-card-head {
+    background-color: rgb(255,153,51);
+    color: #FFF;
+}
 a, .btn-link {
     color: #0071c1;
 }
-
+.btn-success {
+    color: #fff;
+    background-color: #26b050;
+    border-color: #26b050;
+}
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;

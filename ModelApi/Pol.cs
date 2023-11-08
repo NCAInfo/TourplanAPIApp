@@ -47,9 +47,9 @@ public partial class Pol
 
     public string BookingType { get; set; }
 
-    public string InvoiceText3 { get; set; }
+    //public string InvoiceText3 { get; set; }
 
-    public string InvoiceText4 { get; set; }
+    //public string InvoiceText4 { get; set; }
 
     public bool ExternalFees { get; set; }
 

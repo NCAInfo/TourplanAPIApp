@@ -73,7 +73,31 @@ public class DbService
         return obj;
         
     }
-
-
+    public bool CancellationGetByPolId(int polid)
+    {
+        
+        return true;
+    }
+    public bool CancellationSave(Cancellation model)
+    {
+        if(model.Id == 0)
+        {
+            db.Cancellation.Add(model);
+        }
+        else
+        {
+            db.Cancellation.Update(model);
+        }
+        db.SaveChanges();
+        return true;
+    }
+    public bool CancellationDelete(Cancellation model)
+    {
+       
+            db.Cancellation.Remove(model);
+        
+        db.SaveChanges();
+        return true;
+    }
 }
 

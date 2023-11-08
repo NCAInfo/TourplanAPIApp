@@ -4,7 +4,11 @@ using DiethelmAPI.ModelDb;
 public class GetPolicy
 {
     public int Pol_Id { get; set; }
+    public DateTime DateFrom { get; set; }
+    public DateTime DateTo { get; set; }
+    public string SupplierCode { get; set; }
     public int? OptId { get; set; }
+    public string OptionName { get; set; }
     public string Period { get; set; }
     public string Level { get; set; }
     public string BookingTypes { get; set; }

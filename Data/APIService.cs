@@ -234,9 +234,9 @@ public class APIService
         return rsobj.OrderBy(o => o.Description);
     }
 
-    public async Task<IEnumerable<GetPolicy>> GetPolicies(string suppliercode, string country)
+    public async Task<IEnumerable<GetPolicy>> GetPolicies(string suppliercode,string startdate, string enddate, string country)
     {
-        var res = await client.GetAsync(_endPoint + $"/api/Db/GetCancellationBySupplier/{suppliercode}/{country}");
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetCancellationBySupplier/{suppliercode}/{startdate}/{enddate}/{country}");
         var content = await res.Content.ReadAsStringAsync();
         var rsobj = JsonConvert.DeserializeObject<IEnumerable<GetPolicy>>(content);
         return rsobj.OrderBy(o => o.Period);
