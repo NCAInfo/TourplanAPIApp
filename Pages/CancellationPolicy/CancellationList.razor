@@ -101,23 +101,27 @@
 {
     <Card Title="AMEND" Size="small" Class="mt-2 AmendResult">
         <Body>
-            <Table DataSource="_cancellationLocalList" HidePagination PageSize="1000">
+            <Table DataSource="_cancellationLocalList" HidePagination PageSize="1000" Size="TableSize.Small">
                  
-                     <ActionColumn>
+                     <ActionColumn Title="Edit" Width="100">
                          <Button OnClick="()=>ShowPopup(context)" Icon="edit">Edit</Button>
                      </ActionColumn>
-
+                     <ActionColumn Title="Copy" Width="100">
+                         <Button OnClick="()=>Copy(context)" Icon="Copy">Copy</Button>
+                     </ActionColumn>
                      <PropertyColumn Property="c=>c.DateFrom" Title="Date From" Sortable Format="dd-MM-yyyy">
                  </PropertyColumn>
                  <PropertyColumn Property="c=>c.DateTo" Title="Date To" Sortable Format="dd-MM-yyyy">
                  </PropertyColumn>
-                 <PropertyColumn Property="c=>c.SupplierCode" Title="Supplier" Sortable></PropertyColumn>
-                 <Column TData="string" Title="LEVEL" >
-                     @{
+                 <PropertyColumn Property="c=>c.SupplierCode" Title="Supplier" Sortable>
+                 @{
                         var pol = JsonConvert.DeserializeObject<GetPolicy>(context.JsonGetPolicy);
-                          <span>@pol.Level</span>   
+                        <div>@context.SupplierCode</div>
+                        <Tag>@pol.Level</Tag>
                     }
-             </Column>
+
+                 </PropertyColumn>
+                
              <Column TData="string" Title="RULE SET">
                   @{
                       var pol = JsonConvert.DeserializeObject<GetPolicy>(context.JsonGetPolicy);
@@ -844,5 +848,15 @@
             Console.WriteLine("Invalid date format");
             return parsedDate;
         }
+    }
+
+    async Task Copy(Cancellation obj)
+    {
+        var newobj = Functions.CloneObject<Cancellation>(obj);
+        newobj.Id = 0;
+        newobj.Status = Status.New;
+        db.CancellationSave(newobj);
+        CancellationLoad();
+        await _message.Success("Copied Done!");
     }
 }
