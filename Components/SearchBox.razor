@@ -28,7 +28,7 @@
                         }
                     </datalist> *@
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-6">
 
                      <FormItem Label="Option">
                          <Select DataSource="_productlist" @bind-Value="context.optionCode" EnableSearch TItem="Product"
@@ -37,15 +37,15 @@
                          </Select>
                      </FormItem>
                 </div>
-                <div class="col-sm-2">
-                     <label>DATE FROM (ddmmyy)</label>
+                <div class="col-sm-1">
+                     <label>DATE FROM </label>
                      <input id="startDate" @onchange="@((args) => startdate = args.Value.ToString())" value="@startdate" class="form-control" placeholder="ddmmyy" />
                 </div>
-                <div class="col-sm-2">
-                     <label>DATE TO (ddmmyy)</label>
+                <div class="col-sm-1">
+                     <label>DATE TO </label>
                      <input id="endDate" @onchange="@((args) => enddate = args.Value.ToString())" value="@enddate" class="form-control" placeholder="ddmmyy" />
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
 
                     <button type="submit" class="btn btn-primary mt-4">search</button>
                 </div>
