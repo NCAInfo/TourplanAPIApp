@@ -9,16 +9,38 @@
     <div class="card-body">
         <Form Model="_form" OnFinish="DoSearch" Layout="vertical">
            
-
-            <div class="row">
-                <div class="col-sm-3">
+            <GridRow Gutter="1">
+                <GridCol Span="6">
                     <FormItem Label="Supplier" Class="mb-1">
                         <Select DataSource="_supplierList" @bind-Value="context.user" TItem="Supplier" TItemValue="string"
-                                            EnableSearch LabelName="@nameof(Supplier.Name)" ValueName="@nameof(Supplier.Code)"
+                                    EnableSearch LabelName="@nameof(Supplier.Name)" ValueName="@nameof(Supplier.Code)"
                                  OnSelectedItemChanged="DoSupplierChange">
                          </Select>
 
                      </FormItem>
+                 </GridCol>
+                <GridCol Span="13">
+                     <FormItem Label="Option">
+                         <Select DataSource="_productlist" @bind-Value="context.optionCode" EnableSearch TItem="Product"
+                                 TItemValue="string" LabelName="@nameof(Product.Description)"
+                                 ValueName="@nameof(Product.OptionCode)">
+                         </Select>
+                     </FormItem>
+                </GridCol>
+                 <GridCol Span="2">
+                     <label>DATE FROM </label>
+                     <input id="startDate" @onchange="@((args) => startdate = args.Value.ToString())" value="@startdate" class="form-control" placeholder="ddmmyy" />
+                 </GridCol>
+                <GridCol Span="2">
+                     <label>DATE TO </label>
+                     <input id="endDate" @onchange="@((args) => enddate = args.Value.ToString())" value="@enddate" class="form-control" placeholder="ddmmyy" />
+                </GridCol>
+                 <GridCol Span="1"><button type="submit" class="btn btn-primary mt-4">search</button></GridCol>
+            </GridRow>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    
                    @*  <label>SUPPLIER</label>
                     <input list="_supplierList" class="form-control" @onchange="DoSupplierChange" />
                     <datalist class="col-12" id="_supplierList">
@@ -30,24 +52,17 @@
                 </div>
                 <div class="col-sm-6">
 
-                     <FormItem Label="Option">
-                         <Select DataSource="_productlist" @bind-Value="context.optionCode" EnableSearch TItem="Product"
-                                 TItemValue="string" LabelName="@nameof(Product.Description)"
-                                 ValueName="@nameof(Product.OptionCode)">
-                         </Select>
-                     </FormItem>
+                    
                 </div>
                 <div class="col-sm-1">
-                     <label>DATE FROM </label>
-                     <input id="startDate" @onchange="@((args) => startdate = args.Value.ToString())" value="@startdate" class="form-control" placeholder="ddmmyy" />
+                     
                 </div>
                 <div class="col-sm-1">
-                     <label>DATE TO </label>
-                     <input id="endDate" @onchange="@((args) => enddate = args.Value.ToString())" value="@enddate" class="form-control" placeholder="ddmmyy" />
+                     
                 </div>
                 <div class="col-sm-1">
 
-                    <button type="submit" class="btn btn-primary mt-4">search</button>
+                    
                 </div>
             </div>
         </Form>
