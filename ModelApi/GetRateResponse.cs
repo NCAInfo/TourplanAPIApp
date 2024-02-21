@@ -578,6 +578,13 @@ public class DateRange {
 
 	[XmlElement(ElementName="Taxes")] 
 	public Taxes Taxes { get; set; } = new Taxes();
+
+    [XmlElement(ElementName = "Exchange_Div_Rate")]
+    public double? Exchange_Div_Rate { get; set; }
+
+	[XmlElement(ElementName = "Exchange_Mut_Rate")]
+    public double? Exchange_Mut_Rate { get; set; }
+
 }
 
 [XmlRoot(ElementName="GetRateReply")]
