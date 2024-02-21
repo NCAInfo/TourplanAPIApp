@@ -137,14 +137,16 @@
                  <FormItem Label="Sell Currency" Class="mb-1">
                      <Input @bind-Value="context.Sell_Currency" ReadOnly="true" />
                  </FormItem>
-                    <GridRow>
-                        <GridCol Span="12">
+                 
                 
                  @if (context.Exchange_Div_Rate != null)
                 {
                     <FormItem Label="EXCHANGE RATE" Class="mb-1">
                         <AntDesign.InputNumber @bind-Value="context.Exchange_Div_Rate" Min="1" />
-
+                         <RadioGroup @bind-Value="ExRateOperator">
+                        <Radio Value="@("Mut")">Multi</Radio>
+                        <Radio Value="@("Div")">Div</Radio>
+                    </RadioGroup>
                     </FormItem>
 
                 }
@@ -153,17 +155,16 @@
 
                     <FormItem Label="EXCHANGE RATE" Class="mb-1">
                         <AntDesign.InputNumber @bind-Value="context.Exchange_Mut_Rate" Min="1" />
+                        <RadioGroup @bind-Value="ExRateOperator">
+                            <Radio Value="@("Mut")">Multi</Radio>
+                            <Radio Value="@("Div")">Div</Radio>
+                        </RadioGroup>
                     </FormItem>
 
                 }
-                        </GridCol>
-                    <GridCol Span="12">
-                    <RadioGroup @bind-Value="ExRateOperator">
-                        <Radio Value="@("Mut")">Multi</Radio>
-                        <Radio Value="@("Div")">Div</Radio>
-                    </RadioGroup>
-                    </GridCol>
-                </GridRow>
+                      
+                   
+                
                
                 
              </div>
