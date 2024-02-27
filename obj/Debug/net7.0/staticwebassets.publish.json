@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "Hash": "zVA9GKC8WGQn0tQ0Wb7Ulnl2VY57Z1mjVMTt0wA0zY4=",
+  "Hash": "ALqoLxR9Kn/M4HhR4WptsfF7Fh0qZrd1M5m39NSjcbQ=",
   "Source": "TourplanAPIApp",
   "BasePath": "_content/TourplanAPIApp",
   "Mode": "Default",
-  "ManifestType": "Build",
+  "ManifestType": "Publish",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {

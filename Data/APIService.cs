@@ -2,6 +2,7 @@
 
 
 using DiethelmAPI.ModelDb;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -287,6 +288,13 @@ public class APIService
             return false;
         }
       
+    }
+    
+    public async Task<IEnumerable<Currency>> GetCurrency(string country){
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetCurrency/{country}");
+        var content = await res.Content.ReadAsStringAsync();
+        var rsobj = JsonConvert.DeserializeObject<IEnumerable<Currency>>(content);
+        return rsobj;
     }
 }
 

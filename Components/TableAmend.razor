@@ -132,40 +132,37 @@
                  </FormItem>
 
                  <FormItem Label="Buy Currency" Class="mb-1">
-                     <Input @bind-Value="context.Buy_Currency" ReadOnly="true" />
+                    <Select TItem="Currency" TItemValue="string" Ite DataSource="_currency" @bind-Value="context.Buy_Currency" ValueName="@nameof(Currency.Code)" LabelName="@nameof(Currency.Code)"></Select>
+                    
                  </FormItem>
                  <FormItem Label="Sell Currency" Class="mb-1">
-                     <Input @bind-Value="context.Sell_Currency" ReadOnly="true" />
+                     <Select TItem="Currency" TItemValue="string" DataSource="_currency" @bind-Value="context.Sell_Currency" ValueName="@nameof(Currency.Code)" LabelName="@nameof(Currency.Code)"></Select>
+                   
                  </FormItem>
                  
                 
-                 @if (context.Exchange_Div_Rate != null)
+                 @if (context.Buy_Currency != context.Sell_Currency)
                 {
-                    <FormItem Label="EXCHANGE RATE" Class="mb-1">
-                        <AntDesign.InputNumber @bind-Value="context.Exchange_Div_Rate" Min="1" />
-                         <RadioGroup @bind-Value="ExRateOperator">
-                        <Radio Value="@("Mut")">Multi</Radio>
-                        <Radio Value="@("Div")">Div</Radio>
-                    </RadioGroup>
-                    </FormItem>
+                    if(ExRateOperator == "Div"){
+                        <FormItem Label="EXCHANGE RATE" Class="mb-1">
+                            <AntDesign.InputNumber @bind-Value="context.Exchange_Div_Rate" Min="1" />
+                            <RadioGroup @bind-Value="ExRateOperator">
+                                <Radio Value="@("Mut")">Multi</Radio>
+                                <Radio Value="@("Div")">Div</Radio>
+                            </RadioGroup>
+                        </FormItem>
+                    }else{
+                        <FormItem Label="EXCHANGE RATE" Class="mb-1">
+                            <AntDesign.InputNumber @bind-Value="context.Exchange_Mut_Rate" Min="1" />
+                            <RadioGroup @bind-Value="ExRateOperator">
+                                <Radio Value="@("Mut")">Multi</Radio>
+                                <Radio Value="@("Div")">Div</Radio>
+                            </RadioGroup>
+                        </FormItem>
+                    }
+                    
 
                 }
-                @if (context.Exchange_Mut_Rate != null)
-                {
-
-                    <FormItem Label="EXCHANGE RATE" Class="mb-1">
-                        <AntDesign.InputNumber @bind-Value="context.Exchange_Mut_Rate" Min="1" />
-                        <RadioGroup @bind-Value="ExRateOperator">
-                            <Radio Value="@("Mut")">Multi</Radio>
-                            <Radio Value="@("Div")">Div</Radio>
-                        </RadioGroup>
-                    </FormItem>
-
-                }
-                      
-                   
-                
-               
                 
              </div>
              <div class="col-sm-6">
@@ -309,7 +306,6 @@
                         <AntDesign.InputNumber Size="@InputSize.Small" @bind-Value="rate.MarkupAmount" Style="background-color:#FFF"></AntDesign.InputNumber> <Button OnClick="()=>DoMarkup(rate)">Calculate</Button>
                     </div>
                     <table class="table table-striped table-bordered">
-
                         <thead>
                             <tr>
                                 <th>SERVICE ITEM</th>
@@ -376,7 +372,11 @@
                                                                Size="@InputSize.Small"
                                                                Precision="2"
                                                                Style="width:100%"
-                                                               TValue="double?" OnChange="(e) => {rate.GroupSell.Rates.AdultRate = e.Value;rate.FITCost.Rates.AdultRate = e.Value;rate.FITSell.Rates.AdultRate = e.Value;} " />
+                                                               TValue="double?" OnChange="(e) => {
+                                                                rate.GroupSell.Rates.AdultRate = CalcRate(e.Value);
+                                                                rate.FITCost.Rates.AdultRate = e.Value;
+                                                                rate.FITSell.Rates.AdultRate = CalcRate(e.Value);
+                                                                } " />
                                     </td>
                                     <td>
                                         @rateMaster.GroupSell.Rates.AdultRate?.ToString("N2")
@@ -387,7 +387,10 @@
                                                                Size="@InputSize.Small"
                                                                Precision="2"
                                                                Style="width:100%"
-                                                               TValue="double?" OnChange="(e) => {rate.FITCost.Rates.AdultRate = e.Value;rate.FITSell.Rates.AdultRate = e.Value;} " />
+                                                               TValue="double?" OnChange="(e) => {
+                                                               // rate.FITCost.Rates.AdultRate = e.Value;
+                                                                rate.FITSell.Rates.AdultRate = e.Value;
+                                                                } " />
                                     </td>
                                     <td>
                                         @rateMaster.FITCost.Rates.AdultRate?.ToString("N2")
@@ -398,7 +401,7 @@
                                                                Size="@InputSize.Small"
                                                                Precision="2"
                                                                Style="width:100%"
-                                                               TValue="double?" OnChange="(e) => {rate.FITSell.Rates.AdultRate = e.Value;} " />
+                                                               TValue="double?" OnChange="(e) => {rate.FITSell.Rates.AdultRate = CalcRate(e.Value);} " />
                                     </td>
                                     <td>
                                         @rateMaster.FITSell.Rates.AdultRate?.ToString("N2")
@@ -427,7 +430,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.PaxBreakRate.Price_Pxb1=e;rate.FITCost.Rates.PaxBreakRate.Price_Pxb1=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb1=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb1=CalcRate(e);
+                                                                    rate.FITCost.Rates.PaxBreakRate.Price_Pxb1=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb1=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb1.ToString("N2")
@@ -435,7 +441,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.PaxBreakRate.Price_Pxb1" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.PaxBreakRate.Price_Pxb1=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb1=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.PaxBreakRate.Price_Pxb1=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb1=e;
+                                                                    }" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb1.ToString("N2")
@@ -443,7 +452,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.PaxBreakRate.Price_Pxb1" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb1=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb1=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb1.ToString("N2")
@@ -468,7 +477,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.PaxBreakRate.Price_Pxb2=e;rate.FITCost.Rates.PaxBreakRate.Price_Pxb2=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb2=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb2=CalcRate(e);
+                                                                    rate.FITCost.Rates.PaxBreakRate.Price_Pxb2=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb2=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb2.ToString("N2")
@@ -476,7 +488,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.PaxBreakRate.Price_Pxb2" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.PaxBreakRate.Price_Pxb2=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb2=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.PaxBreakRate.Price_Pxb2=e;
+                                                                   rate.FITSell.Rates.PaxBreakRate.Price_Pxb2=e;
+                                                                   }" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb2.ToString("N2")
@@ -484,7 +499,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.PaxBreakRate.Price_Pxb2" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb2=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb2=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb2.ToString("N2")
@@ -509,7 +524,11 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.PaxBreakRate.Price_Pxb3=e;rate.FITCost.Rates.PaxBreakRate.Price_Pxb3=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb3=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb3=CalcRate(e);
+                                                                    rate.FITCost.Rates.PaxBreakRate.Price_Pxb3=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb3=CalcRate(e);
+                                                                    }" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb3.ToString("N2")
@@ -517,7 +536,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.PaxBreakRate.Price_Pxb3" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.PaxBreakRate.Price_Pxb3=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb3=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.PaxBreakRate.Price_Pxb3=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb3=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb3.ToString("N2")
@@ -525,7 +546,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.PaxBreakRate.Price_Pxb3" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb3=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb3=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb3.ToString("N2")
@@ -550,7 +571,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.PaxBreakRate.Price_Pxb4=e;rate.FITCost.Rates.PaxBreakRate.Price_Pxb4=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb4=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb4=CalcRate(e);
+                                                                    rate.FITCost.Rates.PaxBreakRate.Price_Pxb4=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb4=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb4.ToString("N2")
@@ -558,7 +582,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.PaxBreakRate.Price_Pxb4" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.PaxBreakRate.Price_Pxb4=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb4=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                   // rate.FITCost.Rates.PaxBreakRate.Price_Pxb4=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb4=e;
+                                                                   }" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb4.ToString("N2")
@@ -566,7 +593,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.PaxBreakRate.Price_Pxb4" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb4=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb4=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb4.ToString("N2")
@@ -591,7 +618,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.PaxBreakRate.Price_Pxb5=e;rate.FITCost.Rates.PaxBreakRate.Price_Pxb5=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb5=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb5=CalcRate(e);
+                                                                    rate.FITCost.Rates.PaxBreakRate.Price_Pxb5=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb5=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb5.ToString("N2")
@@ -599,7 +629,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.PaxBreakRate.Price_Pxb5" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.PaxBreakRate.Price_Pxb5=e;rate.FITSell.Rates.PaxBreakRate.Price_Pxb5=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.PaxBreakRate.Price_Pxb5=e;
+                                                                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb5=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb5.ToString("N2")
@@ -607,7 +639,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.PaxBreakRate.Price_Pxb5" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb5=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.PaxBreakRate.Price_Pxb5=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb5.ToString("N2")
@@ -636,7 +668,11 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.RoomRate.TW" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.TW=e; rate.FITCost.Rates.RoomRate.TW=e; rate.FITSell.Rates.RoomRate.TW=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.RoomRate.TW=CalcRate(e); 
+                                                                   rate.FITCost.Rates.RoomRate.TW=e; 
+                                                                   rate.FITSell.Rates.RoomRate.TW=CalcRate(e);
+                                                                   }" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.RoomRate.TW?.ToString("N2")
@@ -644,7 +680,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.RoomRate.TW" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.RoomRate.TW=e; rate.FITSell.Rates.RoomRate.TW=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.RoomRate.TW=e; 
+                                                                   rate.FITSell.Rates.RoomRate.TW=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.RoomRate.TW?.ToString("N2")
@@ -652,7 +689,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.RoomRate.TW" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.RoomRate.TW=e; rate.FITSell.Rates.RoomRate.TW=e;}" />
+                                                                   OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.TW=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.RoomRate.TW?.ToString("N2")
@@ -678,7 +715,10 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.RoomRate.SG" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.SG=e; rate.FITCost.Rates.RoomRate.SG=e; rate.FITSell.Rates.RoomRate.SG=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    rate.GroupSell.Rates.RoomRate.SG=CalcRate(e);
+                                                                    rate.FITCost.Rates.RoomRate.SG=e; 
+                                                                    rate.FITSell.Rates.RoomRate.SG=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.RoomRate.SG?.ToString("N2")
@@ -686,7 +726,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.RoomRate.SG" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.RoomRate.SG=e; rate.FITSell.Rates.RoomRate.SG=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.RoomRate.SG=e; 
+                                                                   rate.FITSell.Rates.RoomRate.SG=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.RoomRate.SG?.ToString("N2")
@@ -694,7 +736,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.RoomRate.SG" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.RoomRate.SG=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.RoomRate.SG=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.RoomRate.SG?.ToString("N2")
@@ -719,7 +761,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.RoomRate.TR" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.TR=e; rate.FITCost.Rates.RoomRate.TR=e; rate.FITSell.Rates.RoomRate.TR=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.TR=CalcRate(e); rate.FITCost.Rates.RoomRate.TR=e; rate.FITSell.Rates.RoomRate.TR=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.RoomRate.TR?.ToString("N2")
@@ -727,7 +769,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.RoomRate.TR" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.RoomRate.TR=e; rate.FITSell.Rates.RoomRate.TR=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.RoomRate.TR=e; 
+                                                                    rate.FITSell.Rates.RoomRate.TR=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.RoomRate.TR?.ToString("N2")
@@ -735,7 +779,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.RoomRate.TR" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.TR=e;}" />
+                                                                   OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.TR=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.RoomRate.TR?.ToString("N2")
@@ -760,7 +804,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.RoomRate.QD" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.QD=e; rate.FITCost.Rates.RoomRate.QD=e; rate.FITSell.Rates.RoomRate.QD=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.QD=CalcRate(e); rate.FITCost.Rates.RoomRate.QD=e; rate.FITSell.Rates.RoomRate.QD=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.RoomRate.QD?.ToString("N2")
@@ -768,7 +812,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.RoomRate.QD" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.RoomRate.QD=e; rate.FITSell.Rates.RoomRate.QD=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.RoomRate.QD=e; 
+                                                                   rate.FITSell.Rates.RoomRate.QD=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.RoomRate.QD?.ToString("N2")
@@ -776,7 +822,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.RoomRate.QD" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double?"
-                                                                   OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.QD=e;}" />
+                                                                   OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.QD=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.RoomRate.QD?.ToString("N2")
@@ -799,7 +845,7 @@
                                     <td>
                                         <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.RoomRate.AA" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                TValue="double"
-                                                               OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.AA=e; rate.FITCost.Rates.RoomRate.AA=e; rate.FITSell.Rates.RoomRate.AA=e;}" />
+                                                               OnChange="(e)=>{rate.GroupSell.Rates.RoomRate.AA=CalcRate(e); rate.FITCost.Rates.RoomRate.AA=e; rate.FITSell.Rates.RoomRate.AA=CalcRate(e);}" />
                                     </td>
                                     <td>
                                         @rateMaster.GroupSell.Rates.RoomRate.AA.ToString("N2")
@@ -807,7 +853,9 @@
                                     <td>
                                         <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.RoomRate.AA" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                TValue="double"
-                                                               OnChange="(e)=>{rate.FITCost.Rates.RoomRate.AA=e; rate.FITSell.Rates.RoomRate.AA=e;}" />
+                                                               OnChange="(e)=>{
+                                                                //rate.FITCost.Rates.RoomRate.AA=e; 
+                                                               rate.FITSell.Rates.RoomRate.AA=e;}" />
                                     </td>
                                     <td>
                                         @rateMaster.FITCost.Rates.RoomRate.AA.ToString("N2")
@@ -815,7 +863,7 @@
                                     <td>
                                         <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.RoomRate.AA" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                TValue="double"
-                                                               OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.AA=e;}" />
+                                                               OnChange="(e)=>{ rate.FITSell.Rates.RoomRate.AA=CalcRate(e);}" />
                                     </td>
                                     <td>
                                         @rateMaster.FITSell.Rates.RoomRate.AA.ToString("N2")
@@ -840,7 +888,7 @@
                                 </td>
                                 <td>
                                     <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.ChildRate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%" TValue="double"
-                                                           OnChange="(e)=>{rate.GroupSell.Rates.ChildRate=e; rate.FITCost.Rates.ChildRate=e; rate.FITSell.Rates.ChildRate=e;}" />
+                                                           OnChange="(e)=>{rate.GroupSell.Rates.ChildRate=CalcRate(e); rate.FITCost.Rates.ChildRate=e; rate.FITSell.Rates.ChildRate=CalcRate(e);}" />
                                 </td>
                                 <td>
                                     @rateMaster.GroupSell.Rates.ChildRate.ToString("N2")
@@ -848,14 +896,16 @@
                                 <td>
                                     <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.ChildRate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                            TValue="double"
-                                                           OnChange="(e)=>{rate.FITCost.Rates.ChildRate=e; rate.FITSell.Rates.ChildRate=e;}" />
+                                                           OnChange="(e)=>{
+                                                            //rate.FITCost.Rates.ChildRate=e; 
+                                                           rate.FITSell.Rates.ChildRate=e;}" />
                                 </td>
                                 <td>
                                     @rateMaster.FITCost.Rates.ChildRate.ToString("N2")
                                 </td>
                                 <td>
                                     <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.ChildRate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%" TValue="double"
-                                                           OnChange="(e)=>{rate.FITSell.Rates.ChildRate=e;}" />
+                                                           OnChange="(e)=>{rate.FITSell.Rates.ChildRate=CalcRate(e);}" />
                                 </td>
                                 <td>
                                     @rateMaster.FITSell.Rates.ChildRate.ToString("N2")
@@ -879,7 +929,7 @@
                                 <td>
                                     <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.InfantRate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                            TValue="double"
-                                                           OnChange="(e)=>{rate.GroupSell.Rates.InfantRate=e; rate.FITCost.Rates.InfantRate=e; rate.FITSell.Rates.InfantRate=e;}" />
+                                                           OnChange="(e)=>{rate.GroupSell.Rates.InfantRate=CalcRate(e); rate.FITCost.Rates.InfantRate=e; rate.FITSell.Rates.InfantRate=CalcRate(e);}" />
                                 </td>
                                 <td>
                                     @rateMaster.GroupSell.Rates.InfantRate.ToString("N2")
@@ -887,7 +937,8 @@
                                 <td>
                                     <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.InfantRate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                            TValue="double"
-                                                           OnChange="(e)=>{rate.FITCost.Rates.InfantRate=e; rate.FITSell.Rates.InfantRate=e;}" />
+                                                           OnChange="(e)=>{//rate.FITCost.Rates.InfantRate=e; 
+                                                           rate.FITSell.Rates.InfantRate=e;}" />
                                 </td>
                                 <td>
                                     @rateMaster.FITCost.Rates.InfantRate.ToString("N2")
@@ -895,7 +946,7 @@
                                 <td>
                                     <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.InfantRate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                            TValue="double"
-                                                           OnChange="(e)=>{rate.FITSell.Rates.InfantRate=e;}" />
+                                                           OnChange="(e)=>{rate.FITSell.Rates.InfantRate=CalcRate(e);}" />
                                 </td>
                                 <td>
                                     @rateMaster.FITSell.Rates.InfantRate.ToString("N2")
@@ -923,7 +974,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e; rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=CalcRate(e); rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate
@@ -931,7 +982,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;
+                                                                   rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate
@@ -939,7 +991,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate
@@ -960,7 +1012,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e; rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=CalcRate(e); rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate
@@ -968,7 +1020,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;
+                                                                   rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate
@@ -976,7 +1030,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate
@@ -995,7 +1049,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e; rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=CalcRate(e); rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate
@@ -1003,7 +1057,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;
+                                                                   rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate
@@ -1011,7 +1066,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate
@@ -1033,7 +1088,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e; rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=CalcRate(e); rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate
@@ -1041,7 +1096,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;
+                                                                   rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate
@@ -1049,7 +1105,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate
@@ -1068,7 +1124,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e; rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=CalcRate(e); rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate
@@ -1076,7 +1132,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;
+                                                                   rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate
@@ -1084,7 +1141,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate
@@ -1103,7 +1160,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e; rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=CalcRate(e); rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate
@@ -1111,7 +1168,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;
+                                                                   rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate
@@ -1119,7 +1177,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate
@@ -1141,7 +1199,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e; rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=CalcRate(e); rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate
@@ -1149,7 +1207,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;
+                                                                   rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate
@@ -1157,7 +1216,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate
@@ -1176,7 +1235,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e; rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=CalcRate(e); rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate
@@ -1184,7 +1243,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;
+                                                                   rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate
@@ -1192,7 +1253,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate
@@ -1211,7 +1272,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e; rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=CalcRate(e); rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate
@@ -1219,7 +1280,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;
+                                                                   rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate
@@ -1227,7 +1290,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate
@@ -1249,7 +1312,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e; rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=CalcRate(e); rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate
@@ -1257,7 +1320,9 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{
+                                                                    //rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;
+                                                                   rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate
@@ -1265,7 +1330,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate
@@ -1284,7 +1349,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e; rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=CalcRate(e); rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate
@@ -1292,7 +1357,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;
+                                                                   rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate
@@ -1300,7 +1366,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate
@@ -1319,7 +1385,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e; rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=CalcRate(e); rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate
@@ -1327,7 +1393,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;
+                                                                   rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate
@@ -1335,7 +1402,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate
@@ -1357,7 +1424,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e; rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=CalcRate(e); rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate
@@ -1365,7 +1432,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;
+                                                                   rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate
@@ -1373,7 +1441,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate
@@ -1392,7 +1460,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e; rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=CalcRate(e); rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate
@@ -1400,7 +1468,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;
+                                                                   rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate
@@ -1408,7 +1477,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate
@@ -1427,7 +1496,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e; rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=CalcRate(e); rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate
@@ -1435,7 +1504,8 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{//rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;
+                                                                   rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate
@@ -1443,7 +1513,7 @@
                                         <td>
                                             <AntDesign.InputNumber @bind-Value="rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate" Min="0" Size="@InputSize.Small" Precision="2" Style="width:100%"
                                                                    TValue="double"
-                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=e;}" />
+                                                                   OnChange="(e)=>{rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate=CalcRate(e);}" />
                                         </td>
                                         <td>
                                             @rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate
