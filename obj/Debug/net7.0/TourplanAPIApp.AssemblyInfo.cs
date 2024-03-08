@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TourplanAPIApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a2412169060cd3fda450a1dfcd7eb73662d8940")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd25eb58f12633405ef73083a259946317d42fc3")]
 [assembly: System.Reflection.AssemblyProductAttribute("TourplanAPIApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TourplanAPIApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

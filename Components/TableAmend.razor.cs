@@ -4,11 +4,234 @@ using AntDesign;
 
 using Newtonsoft.Json;
 using System.Web;
+using System.Text.RegularExpressions;
+using DiethelmAPI.ModelDb;
 
 namespace TourplanAPIApp.Components
 {
     public partial class TableAmend
     {
+        private string Parse1(string value)
+        {
+        return Regex.Replace(value, @"\$\s?|(,*)", "");
+        }
+        void DoCalcRound(int val,RateSet rate){
+            if (rate.GroupCost.Rates.AdultRate != null)
+            {
+                if (rate.GroupCost.Rates.AdultRateApply)
+                {
+                    rate.GroupSell.Rates.AdultRate = CalcRound(CalcRate(rate.GroupCost.Rates.AdultRate));
+                     rate.FITSell.Rates.AdultRate =  CalcRound(CalcRate(rate.GroupCost.Rates.AdultRate));
+                }
+            }
+
+            if (rate.GroupCost.Rates.ChildRateApply)
+            {
+                rate.GroupSell.Rates.ChildRate = CalcRound(CalcRate(rate.GroupCost.Rates.ChildRate)).Value;
+                 rate.FITSell.Rates.ChildRate = CalcRound(CalcRate(rate.GroupCost.Rates.ChildRate)).Value;
+            }
+
+            if (rate.GroupCost.Rates.InfantRateApply)
+            {
+                 rate.GroupSell.Rates.InfantRate = CalcRound(CalcRate(rate.GroupCost.Rates.InfantRate)).Value;
+                rate.FITSell.Rates.InfantRate = CalcRound(CalcRate(rate.GroupCost.Rates.InfantRate)).Value;
+            }
+
+            if (rate.GroupCost.Rates.PaxBreakRate != null)
+            {
+                if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1Apply)
+                {
+                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb1 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1)).Value;
+                     rate.FITSell.Rates.PaxBreakRate.Price_Pxb1 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1)).Value;
+                }
+
+                if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2Apply)
+                {
+                      rate.GroupSell.Rates.PaxBreakRate.Price_Pxb2 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2)).Value;
+                      rate.FITSell.Rates.PaxBreakRate.Price_Pxb2 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2)).Value;
+                }
+
+                if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3Apply)
+                {
+                      rate.GroupSell.Rates.PaxBreakRate.Price_Pxb3 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3)).Value;
+                     rate.FITSell.Rates.PaxBreakRate.Price_Pxb3 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3)).Value;
+                }
+
+                if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4Apply)
+                {
+                     rate.GroupSell.Rates.PaxBreakRate.Price_Pxb4 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4)).Value;
+                     rate.FITSell.Rates.PaxBreakRate.Price_Pxb4 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4)).Value;
+                }
+
+                if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5Apply)
+                {
+                     rate.GroupSell.Rates.PaxBreakRate.Price_Pxb5 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5)).Value;
+                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb5 = CalcRound(CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5)).Value;
+                }
+            }
+
+            if (rate.GroupCost.Rates.RoomRate != null)
+            {
+                if (rate.GroupCost.Rates.RoomRate.SGApply)
+                {
+                    rate.GroupSell.Rates.RoomRate.SG = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.SG));
+                    rate.FITSell.Rates.RoomRate.SG = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.SG));
+                }
+
+                if (rate.GroupCost.Rates.RoomRate.TWApply)
+                {
+                    rate.GroupSell.Rates.RoomRate.TW = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.TW));
+                     rate.FITSell.Rates.RoomRate.TW = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.TW));
+                }
+
+                if (rate.GroupCost.Rates.RoomRate.TRApply)
+                {
+                    rate.GroupSell.Rates.RoomRate.TR = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.TR));
+                    rate.FITSell.Rates.RoomRate.TR = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.TR));
+                }
+
+                if (rate.GroupCost.Rates.RoomRate.QDApply)
+                {
+                    rate.GroupSell.Rates.RoomRate.QD = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.QD));
+                     rate.FITSell.Rates.RoomRate.QD = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.QD));
+                }
+
+                if (rate.GroupCost.Rates.RoomRate.AAApply)
+                {
+                    rate.GroupSell.Rates.RoomRate.AA = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.AA)).Value;
+                    rate.FITSell.Rates.RoomRate.AA = CalcRound(CalcRate(rate.GroupCost.Rates.RoomRate.AA)).Value;
+                }
+            }
+
+            if (rate.GroupCost.Rates.Extras != null)
+            {
+                if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Apply)
+                {
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate)).Value;
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Apply)
+                {
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate)).Value;
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Apply)
+                {
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate)).Value;
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Apply)
+                {
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate)).Value;
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Apply)
+                {
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate)).Value;
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Apply)
+                {
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate)).Value;
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Apply)
+                {
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate)).Value;
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Apply)
+                {
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate)).Value;
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Apply)
+                {
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate)).Value;
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Apply)
+                {
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate)).Value;
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Apply)
+                {
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate)).Value;
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Apply)
+                {
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate)).Value;
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Apply)
+                {
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate)).Value;
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Apply)
+                {
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate)).Value;
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate)).Value;
+                }
+
+                if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Apply)
+                {
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate)).Value;
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = CalcRound(CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate)).Value;
+                }
+            }
+        }
+        private double? CalcRound(double? fromOriginal){
+            
+            if(fromOriginal.HasValue){
+                double roundedPrice = 0;
+                double original = fromOriginal.Value;
+                switch (RoundNumberSelected)
+                {
+                    case 1:
+                        roundedPrice = original;
+                        break;
+                    case 2:
+                        roundedPrice = Math.Ceiling(original * 10) / 10; // Round up to nearest $0.10
+                        break;
+                    case 3:
+                        roundedPrice = Math.Ceiling(original * 2) / 2;   // Round up to nearest $0.50
+                        break;
+                    case 4:
+                        roundedPrice = Math.Ceiling(original);           // Round up to nearest $1
+                        break;
+                    case 5:
+                        roundedPrice = Math.Ceiling(original / 5) * 5;  // Round up to nearest $5
+                        break;
+                    case 6:
+                        roundedPrice = Math.Ceiling(original / 10) * 10; // Round up to nearest $10
+                        break;
+                    case 7:
+                        roundedPrice = Math.Ceiling(original / 100) * 100; // Round up to nearest $100
+                        break;
+                    default:
+                        break;
+                
+                }
+                return roundedPrice;
+            }
+            return null;
+        }
         private double CalcRate(double? amount){
             double? divByExrate = 1f;
             double? retRate = amount.Value;
@@ -26,8 +249,6 @@ namespace TourplanAPIApp.Components
         }
         void DoMarkup(RateSet rate)
         {
-            
-
             var rateMaster = _dataMaster.RateSet.Where(w => w.Key == rate.Key).FirstOrDefault();
             var updateNew = rate.GroupCost;
             var updateMaster = rateMaster.GroupCost;
@@ -36,26 +257,26 @@ namespace TourplanAPIApp.Components
                 if (rate.GroupCost.Rates.AdultRateApply)
                 {
                     rate.GroupCost.Rates.AdultRate = rateMaster.GroupCost.Rates.AdultRate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.AdultRate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.AdultRate = rateMaster.GroupSell.Rates.AdultRate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.AdultRate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.AdultRate = CalcRate(rate.GroupCost.Rates.AdultRate);
                     rate.FITCost.Rates.AdultRate = rateMaster.FITCost.Rates.AdultRate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.AdultRate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.AdultRate = rateMaster.FITSell.Rates.AdultRate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.AdultRate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.AdultRate =  CalcRate(rate.GroupCost.Rates.AdultRate);
                 }
             }
 
             if (rate.GroupCost.Rates.ChildRateApply)
             {
                 rate.GroupCost.Rates.ChildRate = rateMaster.GroupCost.Rates.ChildRate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.ChildRate * rate.MarkupPercent) / 100);
-                rate.GroupSell.Rates.ChildRate = rateMaster.GroupSell.Rates.ChildRate + CalcRate( rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.ChildRate * rate.MarkupPercent) / 100);
+                rate.GroupSell.Rates.ChildRate = CalcRate(rate.GroupCost.Rates.ChildRate);
                 rate.FITCost.Rates.ChildRate = rateMaster.FITCost.Rates.ChildRate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.ChildRate * rate.MarkupPercent) / 100);
-                rate.FITSell.Rates.ChildRate = rateMaster.FITSell.Rates.ChildRate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.ChildRate * rate.MarkupPercent) / 100);
+                rate.FITSell.Rates.ChildRate = CalcRate(rate.GroupCost.Rates.ChildRate);
             }
 
             if (rate.GroupCost.Rates.InfantRateApply)
             {
                 rate.GroupCost.Rates.InfantRate = rateMaster.GroupCost.Rates.InfantRate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.InfantRate * rate.MarkupPercent) / 100);
-                rate.GroupSell.Rates.InfantRate = rateMaster.GroupSell.Rates.InfantRate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.InfantRate * rate.MarkupPercent) / 100);
+                rate.GroupSell.Rates.InfantRate = CalcRate(rate.GroupCost.Rates.InfantRate);
                 rate.FITCost.Rates.InfantRate = rateMaster.FITCost.Rates.InfantRate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.InfantRate * rate.MarkupPercent) / 100);
-                rate.FITSell.Rates.InfantRate = rateMaster.FITSell.Rates.InfantRate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.InfantRate * rate.MarkupPercent) / 100);
+                rate.FITSell.Rates.InfantRate = CalcRate(rate.GroupCost.Rates.InfantRate);
             }
 
             if (rate.GroupCost.Rates.PaxBreakRate != null)
@@ -63,41 +284,41 @@ namespace TourplanAPIApp.Components
                 if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1Apply)
                 {
                     rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1 = rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb1 + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb1 = rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb1 + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb1 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1);
                     rate.FITCost.Rates.PaxBreakRate.Price_Pxb1 = rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb1 + rate.MarkupAmount + ((rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb1 = rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb1 + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb1 * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb1 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb1);
                 }
 
                 if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2Apply)
                 {
                     rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2 = rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb2 + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb2 = rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb2 + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb2 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2);
                     rate.FITCost.Rates.PaxBreakRate.Price_Pxb2 = rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb2 + rate.MarkupAmount + ((rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb2 = rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb2 + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb2 * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb2 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb2);
                 }
 
                 if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3Apply)
                 {
                     rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3 = rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb3 + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb3 = rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb3 + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb3 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3);
                     rate.FITCost.Rates.PaxBreakRate.Price_Pxb3 = rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb3 + rate.MarkupAmount + ((rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb3 = rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb3 + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb3 * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb3 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb3);
                 }
 
                 if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4Apply)
                 {
                     rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4 = rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb4 + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb4 = rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb4 + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb4 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4);
                     rate.FITCost.Rates.PaxBreakRate.Price_Pxb4 = rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb4 + rate.MarkupAmount + ((rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb4 = rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb4 + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb4 * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb4 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb4);
                 }
 
                 if (rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5Apply)
                 {
                     rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5 = rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb5 + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb5 = rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb5 + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.PaxBreakRate.Price_Pxb5 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5);
                     rate.FITCost.Rates.PaxBreakRate.Price_Pxb5 = rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb5 + rate.MarkupAmount + ((rateMaster.FITCost.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb5 = rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb5 + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.PaxBreakRate.Price_Pxb5 * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.PaxBreakRate.Price_Pxb5 = CalcRate(rate.GroupCost.Rates.PaxBreakRate.Price_Pxb5);
                 }
             }
 
@@ -106,41 +327,41 @@ namespace TourplanAPIApp.Components
                 if (rate.GroupCost.Rates.RoomRate.SGApply)
                 {
                     rate.GroupCost.Rates.RoomRate.SG = rateMaster.GroupCost.Rates.RoomRate.SG + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.RoomRate.SG = rateMaster.GroupSell.Rates.RoomRate.SG + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.RoomRate.SG = CalcRate(rate.GroupCost.Rates.RoomRate.SG);
                     rate.FITCost.Rates.RoomRate.SG = rateMaster.FITCost.Rates.RoomRate.SG + rate.MarkupAmount + ((rateMaster.FITCost.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.RoomRate.SG = rateMaster.FITSell.Rates.RoomRate.SG + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.RoomRate.SG * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.RoomRate.SG = CalcRate(rate.GroupCost.Rates.RoomRate.SG);
                 }
 
                 if (rate.GroupCost.Rates.RoomRate.TWApply)
                 {
                     rate.GroupCost.Rates.RoomRate.TW = rateMaster.GroupCost.Rates.RoomRate.TW + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.RoomRate.TW = rateMaster.GroupSell.Rates.RoomRate.TW + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.RoomRate.TW = CalcRate(rate.GroupCost.Rates.RoomRate.TW);
                     rate.FITCost.Rates.RoomRate.TW = rateMaster.FITCost.Rates.RoomRate.TW + rate.MarkupAmount + ((rateMaster.FITCost.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.RoomRate.TW = rateMaster.FITSell.Rates.RoomRate.TW + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.RoomRate.TW * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.RoomRate.TW = CalcRate(rate.GroupCost.Rates.RoomRate.TW);
                 }
 
                 if (rate.GroupCost.Rates.RoomRate.TRApply)
                 {
                     rate.GroupCost.Rates.RoomRate.TR = rateMaster.GroupCost.Rates.RoomRate.TR + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.RoomRate.TR = rateMaster.GroupSell.Rates.RoomRate.TR + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.RoomRate.TR = CalcRate(rate.GroupCost.Rates.RoomRate.TR);
                     rate.FITCost.Rates.RoomRate.TR = rateMaster.FITCost.Rates.RoomRate.TR + rate.MarkupAmount + ((rateMaster.FITCost.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.RoomRate.TR = rateMaster.FITSell.Rates.RoomRate.TR + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.RoomRate.TR * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.RoomRate.TR = CalcRate(rate.GroupCost.Rates.RoomRate.TR);
                 }
 
                 if (rate.GroupCost.Rates.RoomRate.QDApply)
                 {
                     rate.GroupCost.Rates.RoomRate.QD = rateMaster.GroupCost.Rates.RoomRate.QD + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.RoomRate.QD = rateMaster.GroupSell.Rates.RoomRate.QD + CalcRate(rate.MarkupAmount)+ ((rateMaster.GroupSell.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.RoomRate.QD = CalcRate(rate.GroupCost.Rates.RoomRate.QD);
                     rate.FITCost.Rates.RoomRate.QD = rateMaster.FITCost.Rates.RoomRate.QD + rate.MarkupAmount + ((rateMaster.FITCost.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.RoomRate.QD = rateMaster.FITSell.Rates.RoomRate.QD + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.RoomRate.QD * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.RoomRate.QD = CalcRate(rate.GroupCost.Rates.RoomRate.QD);
                 }
 
                 if (rate.GroupCost.Rates.RoomRate.AAApply)
                 {
                     rate.GroupCost.Rates.RoomRate.AA = rateMaster.GroupCost.Rates.RoomRate.AA + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.RoomRate.AA = rateMaster.GroupSell.Rates.RoomRate.AA + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.RoomRate.AA = CalcRate(rate.GroupCost.Rates.RoomRate.AA);
                     rate.FITCost.Rates.RoomRate.AA = rateMaster.FITCost.Rates.RoomRate.AA + rate.MarkupAmount + ((rateMaster.FITCost.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.RoomRate.AA = rateMaster.FITSell.Rates.RoomRate.AA + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.RoomRate.AA * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.RoomRate.AA = CalcRate(rate.GroupCost.Rates.RoomRate.AA);
                 }
             }
 
@@ -149,125 +370,126 @@ namespace TourplanAPIApp.Components
                 if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Apply)
                 {
                     rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate);
                     rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex1Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Apply)
                 {
                     rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate);
                     rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex1Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Apply)
                 {
                     rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate);
                     rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex1Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Apply)
                 {
                     rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate);
                     rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex2Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Apply)
                 {
                     rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate);
                     rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex2Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Apply)
                 {
                     rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate);
                     rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex2Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Apply)
                 {
                     rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate);
                     rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex3Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Apply)
                 {
                     rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate);
                     rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex3Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Apply)
                 {
                     rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate);
                     rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex3Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Apply)
                 {
                     rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate);
                     rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex4Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Apply)
                 {
                     rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate);
                     rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex4Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Apply)
                 {
                     rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate);
                     rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex4Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Apply)
                 {
                     rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate);
                     rate.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate = CalcRate(rate.GroupCost.Rates.Extras.AdultExtras.ExtraRates.Ex5Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Apply)
                 {
                     rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate);
                     rate.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate = CalcRate(rate.GroupCost.Rates.Extras.ChildExtras.ExtraRates.Ex5Rate);
                 }
 
                 if (rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Apply)
                 {
                     rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((rateMaster.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
-                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+                    rate.GroupSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate);
                     rate.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + rate.MarkupAmount + ((rateMaster.FITCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
-                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate + CalcRate(rate.MarkupAmount) + ((rateMaster.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate * rate.MarkupPercent) / 100);
+                    rate.FITSell.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate = CalcRate(rate.GroupCost.Rates.Extras.InfantExtras.ExtraRates.Ex5Rate);
                 }
             }
         }
 
+        protected int RoundNumberSelected {get;set;} = 1;
         protected string ExRateOperator { get; set; } = "Div";
         protected double ExRate {get;set;} = 1;
 
@@ -292,6 +514,7 @@ namespace TourplanAPIApp.Components
         protected IEnumerable<Product> _selectedProduct { get; set; } = new List<Product>();
         public List<StayPayType> _stayPayTypeList { get; set; } = new List<StayPayType>();
         public IEnumerable<Currency> _currency {get;set;} = new List<Currency>();
+        public IEnumerable<Tt> _TtList {get;set;} = new List<Tt>();
 
         void ShowCodeList()
         {
@@ -318,8 +541,7 @@ namespace TourplanAPIApp.Components
             _stayPayTypeList.Add(new StayPayType { Id = 3, Name = "Lowest" });
             _stayPayTypeList.Add(new StayPayType { Id = 5, Name = "Repeats on first" });
             _stayPayTypeList.Add(new StayPayType { Id = 4, Name = "Repeats on last" });
-
-           
+            _TtList = await ap.GetTaxAll(User.Country);
         }
 
         async Task Edit(int id)
@@ -345,6 +567,7 @@ namespace TourplanAPIApp.Components
 
                 _optionDetail = await ap.GetOptionDetail(rq, User.Country);
                 _data = JsonConvert.DeserializeObject<DateRange>(_obj.JsonData);
+                
                 if (_data.ChargeExtra1 == "Y")
                 {
                     _data.ChargeEx1_Check = true;
@@ -425,7 +648,46 @@ namespace TourplanAPIApp.Components
                     }
                 }
 
+                foreach(var tax in _data.Taxes.TaxInfo){
+                    if(tax.TaxMainOption == "Y"){
+                        tax.TaxMainOption_apply = true;
+                    }
+                    if(tax.TaxSs == "Y"){
+                        tax.TaxSs_apply = true;
+                    }
+                    if(tax.TaxTw == "Y"){
+                        tax.TaxTw_apply = true;
+                    }
+                    if(tax.TaxTr == "Y"){
+                        tax.TaxTr_apply = true;
+                    }
+                    if(tax.TaxQr == "Y"){
+                        tax.TaxQr_apply = true;
+                    }
+                    if(tax.TaxEx1 == "Y"){
+                        tax.TaxEx1_apply = true;
+                    }
+                    if(tax.TaxEx2 == "Y"){
+                        tax.TaxEx2_apply = true;
+                    }
+                    if(tax.TaxEx3 == "Y"){
+                        tax.TaxEx3_apply = true;
+                    }
+                    if(tax.TaxEx4 == "Y"){
+                        tax.TaxEx4_apply = true;
+                    }
+                    if(tax.TaxEx5 == "Y"){
+                        tax.TaxEx5_apply = true;
+                    }
+                }
+
                 _dataMaster = JsonConvert.DeserializeObject<DateRange>(_obj.JsonMaster);
+                if(_data.Taxes.TaxInfo.Count()>0){
+                    if(_data.Taxes.TaxInfo.Any(t=>t.Tax == "")){
+                        await _message.Warning("Tax Code unassigned",5);
+                    }
+                   
+                }
             }
              _currency = await ap.GetCurrency(User.Country);
             IsLoading = false;
@@ -490,6 +752,41 @@ namespace TourplanAPIApp.Components
                 _data.ChargeExtra5 = (_data.ChargeEx5_Check ? "Y" : "N");
             }
 
+
+            foreach(var tax in _data.Taxes.TaxInfo){
+                
+               if(tax.TaxMainOption != null){
+                    tax.TaxMainOption = (tax.TaxMainOption_apply?"Y":"N");
+                }
+                if(tax.TaxSs != null){
+                    tax.TaxSs = (tax.TaxSs_apply?"Y":"N");
+                }
+                if(tax.TaxTw != null){
+                    tax.TaxTw = (tax.TaxTw_apply?"Y":"N");
+                }
+                if(tax.TaxTr != null){
+                    tax.TaxTr = (tax.TaxTr_apply?"Y":"N");
+                }
+                if(tax.TaxQr != null){
+                    tax.TaxQr = (tax.TaxQr_apply?"Y":"N");
+                }
+                if(tax.TaxEx1 != null){
+                    tax.TaxEx1 = (tax.TaxEx1_apply?"Y":"N");
+                }
+                if(tax.TaxEx2 != null){
+                    tax.TaxEx2 = (tax.TaxEx2_apply?"Y":"N");
+                }
+                if(tax.TaxEx3 != null){
+                    tax.TaxEx3 = (tax.TaxEx3_apply?"Y":"N");
+                }
+                if(tax.TaxEx4 != null){
+                    tax.TaxEx4 = (tax.TaxEx4_apply?"Y":"N");
+                }
+                if(tax.TaxEx5 != null){
+                    tax.TaxEx5 = (tax.TaxEx5_apply?"Y":"N");
+                }
+                
+            }
             _obj.Price_Code = _data.Price_Code;
             _obj.OptionCode = _data.OptionCode;
             _obj.Date_From = _data.Date_From;
@@ -549,7 +846,40 @@ namespace TourplanAPIApp.Components
             {
                 _data.ChargeExtra5 = (_data.ChargeEx5_Check ? "Y" : "N");
             }
-
+            foreach(var tax in _data.Taxes.TaxInfo){
+                
+               if(tax.TaxMainOption != null){
+                    tax.TaxMainOption = (tax.TaxMainOption_apply?"Y":"N");
+                }
+                if(tax.TaxSs != null){
+                    tax.TaxSs = (tax.TaxSs_apply?"Y":"N");
+                }
+                if(tax.TaxTw != null){
+                    tax.TaxTw = (tax.TaxTw_apply?"Y":"N");
+                }
+                if(tax.TaxTr != null){
+                    tax.TaxTr = (tax.TaxTr_apply?"Y":"N");
+                }
+                if(tax.TaxQr != null){
+                    tax.TaxQr = (tax.TaxQr_apply?"Y":"N");
+                }
+                if(tax.TaxEx1 != null){
+                    tax.TaxEx1 = (tax.TaxEx1_apply?"Y":"N");
+                }
+                if(tax.TaxEx2 != null){
+                    tax.TaxEx2 = (tax.TaxEx2_apply?"Y":"N");
+                }
+                if(tax.TaxEx3 != null){
+                    tax.TaxEx3 = (tax.TaxEx3_apply?"Y":"N");
+                }
+                if(tax.TaxEx4 != null){
+                    tax.TaxEx4 = (tax.TaxEx4_apply?"Y":"N");
+                }
+                if(tax.TaxEx5 != null){
+                    tax.TaxEx5 = (tax.TaxEx5_apply?"Y":"N");
+                }
+                
+            }
             rq.DateRange.Add(_data);
             var ret = await ap.SetRate(rq, User.Country);
             if (ret.ErrorReply != null)
@@ -572,8 +902,29 @@ namespace TourplanAPIApp.Components
             _obj.JsonData = JsonConvert.SerializeObject(_data);
             ds.RequestSetRateSave(_obj);
         }
-
-        bool _loading = false;
+        void AddNewTax(Tt taxItem){
+             var newTax = new TaxInfo();
+                newTax.Tax = taxItem.Code;
+                newTax.TaxEx1 = "Y";
+                newTax.TaxEx1_apply = true;
+                newTax.TaxEx2 = "Y";
+                newTax.TaxEx2_apply = true;
+                newTax.TaxEx3 = "Y";
+                newTax.TaxEx3_apply = true;
+                newTax.TaxEx4 = "Y";
+                newTax.TaxEx4_apply = true;
+                newTax.TaxEx5 = "Y";
+                newTax.TaxEx5_apply = true;
+                newTax.TaxSs = "Y";
+                newTax.TaxSs_apply = true;
+                 newTax.TaxTw = "Y";
+                newTax.TaxTw_apply = true;
+                 newTax.TaxTr = "Y";
+                newTax.TaxTr_apply = true;
+                newTax.TaxQr = "Y";
+                newTax.TaxQr_apply = true;
+             _data.Taxes.TaxInfo.Add(newTax);
+        }
         void Copy(RequestSetRate model)
         {
             var copy = Functions.CloneObject<RequestSetRate>(model);

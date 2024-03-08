@@ -296,5 +296,11 @@ public class APIService
         var rsobj = JsonConvert.DeserializeObject<IEnumerable<Currency>>(content);
         return rsobj;
     }
+    public async Task<IEnumerable<Tt>> GetTaxAll(string country){
+        var res = await client.GetAsync(_endPoint + $"/api/Db/GetTaxAll/{country}");
+        var content = await res.Content.ReadAsStringAsync();
+        var rsobj = JsonConvert.DeserializeObject<IEnumerable<Tt>>(content);
+        return rsobj;
+    }
 }
 

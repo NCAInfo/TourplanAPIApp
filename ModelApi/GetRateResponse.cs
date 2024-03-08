@@ -479,29 +479,41 @@ public class TaxInfo {
 	[XmlElement(ElementName="Tax")] 
 	public string Tax { get; set; } 
 
+	public bool TaxMainOption_apply { get; set; }
 	[XmlElement(ElementName="TaxMainOption")] 
 	public string TaxMainOption { get; set; } 
 
+	public bool TaxSs_apply { get; set; }
 	[XmlElement(ElementName="TaxSs")] 
-	public string TaxSs { get; set; } 
+	public string TaxSs { get; set; }
+	public bool TaxTw_apply { get; set; }
+	[XmlElement(ElementName="TaxTw")] 
+	public string TaxTw { get; set; } 
 
+	public bool TaxTr_apply { get; set; }
 	[XmlElement(ElementName="TaxTr")] 
 	public string TaxTr { get; set; } 
 
+	public bool TaxQr_apply { get; set; }
 	[XmlElement(ElementName="TaxQr")] 
 	public string TaxQr { get; set; } 
 
+	public bool TaxEx1_apply { get; set; }
 	[XmlElement(ElementName="TaxEx1")] 
 	public string TaxEx1 { get; set; } 
 
+	public bool TaxEx2_apply { get; set; }
 	[XmlElement(ElementName="TaxEx2")] 
 	public string TaxEx2 { get; set; } 
 
+	public bool TaxEx3_apply { get; set; }
 	[XmlElement(ElementName="TaxEx3")] 
 	public string TaxEx3 { get; set; } 
 
+	public bool TaxEx4_apply { get; set; }
 	[XmlElement(ElementName="TaxEx4")] 
 	public string TaxEx4 { get; set; } 
+	public bool TaxEx5_apply { get; set; }
 
 	[XmlElement(ElementName="TaxEx5")] 
 	public string TaxEx5 { get; set; } 
@@ -511,7 +523,7 @@ public class TaxInfo {
 public class Taxes { 
 
 	[XmlElement(ElementName="TaxInfo")] 
-	public TaxInfo TaxInfo { get; set; } = new TaxInfo();
+	public List<TaxInfo> TaxInfo { get; set; } = new List<TaxInfo>();
 }
 
 [XmlRoot(ElementName="DateRange")]
